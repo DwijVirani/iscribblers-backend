@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/user');
 const constants = require('../config/constants');
-const filteredBody = require('../utils/filteredBody');
 const { sendEmail } = require('../utils/sendgrid');
 
 class UserService {
@@ -45,7 +44,7 @@ class UserService {
       if (user && user.role === role && user.authenticateUser(password)) {
         return user.toAuthJSON();
       }
-    } 
+    }
     return null;
   }
 
@@ -56,7 +55,7 @@ class UserService {
   addNewUser(obj, role) {
     return new Promise(async (resolve, reject) => {
       try {
-        const body = filteredBody(obj, constants.WHITELIST.user.register);
+        const body = { ...obj };
         body.email = String(body.email).toLowerCase();
         User.findOne(
           {
@@ -93,11 +92,6 @@ class UserService {
                 reject(err2);
                 return;
               }
-
-              if (obj.invite_id) {
-                const companyService = require('./companyService');
-                companyService.mapUserIntoCompany(item, obj.invite_id);
-              }
               resolve(item.toAuthJSON());
             });
           },
@@ -126,9 +120,9 @@ class UserService {
             if (err) reject(err);
             await sendEmail(
               user.email,
-              'Reset AryaAccounting password',
+              'Reset iScribblers Password',
               // eslint-disable-next-line max-len
-              `Hello ${user.name},<BR /> <a href="https://erp.aryadesigns.co.in/reset-password?token=${token}">Click here</a> for reset password <BR />AryaAccounting Team`,
+              `Hello ${user.name},<BR /> <a href="https://iscribblers-dev.herokuapp.com/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
             );
 
             return resolve(true);

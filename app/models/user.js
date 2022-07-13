@@ -5,7 +5,11 @@ const { EXPRESS_SECRET } = require('../config/env');
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    first_name: {
+      type: String,
+      required: true,
+    },
+    last_name: {
       type: String,
       required: true,
     },
@@ -19,21 +23,22 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    country_code: {
+      type: String,
+      required: true,
+    },
     phone: {
       type: String,
-      required: false,
+      required: true,
     },
     password: {
       type: String,
       required: true,
       unique: true,
     },
-    avatar: {
-      type: String,
-    },
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['business', 'creator', 'admin'],
       required: false,
     },
     extra1: {
@@ -102,9 +107,11 @@ userSchema.methods = {
   toAuthJSON() {
     return {
       id: this._id,
-      name: this.name,
+      first_name: this.first_name,
+      last_name: this.last_name,
+      phone: this.phone,
+      country_code: this.country_code,
       email: this.email,
-      language: this.language,
       token: `${this.createToken()}`,
     };
   },
@@ -112,11 +119,11 @@ userSchema.methods = {
   toJSON() {
     return {
       id: this._id,
-      name: this.name,
-      email: this.email,
+      first_name: this.first_name,
+      last_name: this.last_name,
       phone: this.phone,
-      avatar: this.avatar,
-      language: this.language,
+      country_code: this.country_code,
+      email: this.email,
     };
   },
 };

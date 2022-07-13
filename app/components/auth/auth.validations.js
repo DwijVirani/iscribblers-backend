@@ -28,13 +28,21 @@ class AuthenticationValidator {
    */
   signUp(req, res, next) {
     const errors = {};
-    const { name, email, password } = req.body;
-    if (isEmpty(name)) {
-      errors.name = 'Name is required';
+    const { first_name, last_name, email, password, country_code, phone, role } = req.body;
+    if (isEmpty(first_name)) {
+      errors.first_name = 'First Name is required';
+    } else if (isEmpty(last_name)) {
+      errors.password = 'Last Name is required';
     } else if (isEmpty(email)) {
       errors.password = 'Email is required';
     } else if (isEmpty(password)) {
       errors.password = 'Password is required';
+    } else if (isEmpty(country_code)) {
+      errors.country_code = 'Country code is required';
+    } else if (isEmpty(phone)) {
+      errors.phone = 'Phone number is required';
+    } else if (isEmpty(role)) {
+      errors.role = 'Role is required';
     }
 
     if (Object.keys(errors).length > 0) {

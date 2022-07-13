@@ -10,7 +10,12 @@ module.exports = {
     },
   },
   USER_ROLE_TYPES: {
-    USER: 'user',
+    BUSINESS: 'business',
+    CREATOR: 'creator',
     ADMIN: 'admin',
+  },
+  USER_TYPE: {
+    BUSINESS: 1,
+    CREATOR: 2,
   },
 };
