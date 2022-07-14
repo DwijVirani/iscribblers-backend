@@ -8,10 +8,8 @@ module.exports = (passport) => {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: [
-          'https://iscribblers-dev-backend.herokuapp.com/api/auth/google/callback',
-          'http://localhost:3000/api/auth/google/callback',
-        ],
+        callbackURL: 'https://iscribblers-dev-backend.herokuapp.com/api/auth/google/callback',
+
         passReqToCallback: true,
       },
       async function (request, accessToken, refreshToken, profile, done) {
