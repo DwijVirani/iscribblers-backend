@@ -73,7 +73,6 @@ class AuthController {
   async googleSignIn(req, res) {
     try {
       const { user } = req;
-      console.log(user);
       if (user) createResponse(res, 'ok', 'User logged in successfully', user);
       else createError(res, {}, { message: 'Unable to login,please try again' });
     } catch (e) {
