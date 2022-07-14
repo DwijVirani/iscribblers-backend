@@ -18,7 +18,7 @@ middlewares.init(app);
 // Routes initialization
 routes(app);
 
-const buildPath = path.join(__dirname, '../../', 'wwwroot');
+const buildPath = path.join(__dirname, '../', 'public');
 app.use(favicon(path.join(buildPath, 'favicon.ico')));
 app.use(express.static(buildPath));
 
