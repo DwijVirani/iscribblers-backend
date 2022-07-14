@@ -25,16 +25,19 @@ const userSchema = new mongoose.Schema(
     },
     country_code: {
       type: String,
-      required: true,
+      required: false,
     },
     phone: {
       type: String,
-      required: true,
+      required: false,
     },
     password: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
+    },
+    avatar: {
+      type: String,
     },
     role: {
       type: String,
@@ -43,7 +46,7 @@ const userSchema = new mongoose.Schema(
     },
     extra1: {
       type: String,
-      required: true,
+      required: false,
     },
     resetPasswordToken: {
       type: String,

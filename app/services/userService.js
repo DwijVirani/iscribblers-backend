@@ -26,6 +26,24 @@ class UserService {
     return null;
   }
 
+  async findOrCreate(userProfile) {
+    try {
+      const user = await User.findOne({ email: userProfile.email });
+      const userPayload = {
+        first_name: userProfile.given_name,
+        last_name: userProfile.family_name,
+        email: userProfile.email,
+        avatar: userProfile.picture,
+      };
+      if (!user) {
+        const newUser = await this.addNewUser(userPayload);
+        return newUser;
+      }
+      if (user) return user.toAuthJSON();
+    } catch (e) {
+      throw e;
+    }
+  }
   async getUserByUsernameRaw(username) {
     const normalized_username = String(username).toUpperCase().trim();
     const user = await User.findOne({

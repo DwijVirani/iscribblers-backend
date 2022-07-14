@@ -68,4 +68,18 @@ router.post('/reset-password', AuthValidations.resetPassword, (req, res) => {
   AuthController.resetPassword(req, res);
 });
 
+/**
+ * @route POST api/auth/google
+ * @description reset password
+ * @returns JSON
+ * @access public
+ */
+router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/error' }), function (req, res) {
+  AuthController.googleSignIn(req, res);
+});
+router.get('/error', (req, res) => {
+  res.send('Something Went Wrong.Please try again');
+});
 module.exports = router;

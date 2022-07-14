@@ -6,6 +6,7 @@ const passport = require('passport');
 const morgan = require('morgan');
 const i18n = require('./i18n');
 const passportJwtUtils = require('./passportJwtUtils');
+const passportOAuth = require('./passportOAuth');
 const session = require('express-session');
 const env = require('../config/env');
 class Middlewares {
@@ -29,6 +30,7 @@ class Middlewares {
      * Passport strategy
      */
     passportJwtUtils(passport);
+    passportOAuth(passport);
 
     app.use(
       morgan(function (tokens, req, res) {

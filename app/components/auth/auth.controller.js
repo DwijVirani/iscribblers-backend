@@ -58,7 +58,6 @@ class AuthController {
    */
   async resetPassword(req, res) {
     try {
-      console.log('test');
       const { email, password, token } = req.body;
       const user = await UserService.resetPassword(email, password, token);
       if (user) {
@@ -66,6 +65,17 @@ class AuthController {
       } else {
         createError(res, {}, { message: 'Unable to reset password,please try again' });
       }
+    } catch (e) {
+      createError(res, e);
+    }
+  }
+
+  async googleSignIn(req, res) {
+    try {
+      const { user } = req;
+      console.log(user);
+      if (user) createResponse(res, 'ok', 'User logged in successfully', user);
+      else createError(res, {}, { message: 'Unable to login,please try again' });
     } catch (e) {
       createError(res, e);
     }

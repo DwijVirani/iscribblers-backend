@@ -5,15 +5,12 @@ const express = require('express');
 const app = express();
 const server = http.Server(app);
 // Init Router
-// const favicon = require('express-favicon');
+const favicon = require('express-favicon');
 const chalk = require('chalk');
-// const socketio = require('socket.io');
 const middlewares = require('./middleware');
 const routes = require('./routes');
 const env = require('./config/env');
 const connect = require('./config/database');
-
-
 
 // Initialize all middlewares here
 middlewares.init(app);
@@ -21,9 +18,9 @@ middlewares.init(app);
 // Routes initialization
 routes(app);
 
-// const buildPath = path.join(__dirname, '../../', 'wwwroot');
-// app.use(favicon(path.join(buildPath, 'favicon.ico')));
-// app.use(express.static(buildPath));
+const buildPath = path.join(__dirname, '../../', 'wwwroot');
+app.use(favicon(path.join(buildPath, 'favicon.ico')));
+app.use(express.static(buildPath));
 
 // API Health check
 app.all('/api/health-check', (req, res) => {
@@ -35,10 +32,10 @@ app.all('/api/*', (req, res) => {
 });
 
 // Invalid Route
-app.all('/*', (req, res) => {
-  res.sendFile(path.join(buildPath, 'index.html'));
-  // return res.status(400).json({ status: 400, message: 'Bad Request' });
-});
+// app.all('/*', (req, res) => {
+//   res.sendFile(path.join(buildPath, 'index.html'));
+//   // return res.status(400).json({ status: 400, message: 'Bad Request' });
+// });
 
 // start the server & connect to Mongo
 connect(env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/iscribblers')
@@ -46,7 +43,7 @@ connect(env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/iscribblers')
     console.log('%s database connected', chalk.green('✓'));
   })
   .catch((e) => {
-    console.log('error connecting',e);
+    console.log('error connecting', e);
     if (e.name === 'MongoParseError') {
       console.error(`\n\n${e.name}: Please set NODE_ENV to "production", "development", or "staging".\n\n`);
     } else if (e.name === 'MongoNetworkError') {
@@ -68,4 +65,3 @@ server.listen(process.env.PORT || 3000, () => {
   );
   console.log('  Press CTRL-C to stop\n');
 });
-
