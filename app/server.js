@@ -32,10 +32,10 @@ app.all('/api/*', (req, res) => {
 });
 
 // Invalid Route
-// app.all('/*', (req, res) => {
-//   res.sendFile(path.join(buildPath, 'index.html'));
-//   // return res.status(400).json({ status: 400, message: 'Bad Request' });
-// });
+app.all('/*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+  // return res.status(400).json({ status: 400, message: 'Bad Request' });
+});
 
 // start the server & connect to Mongo
 connect(env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/iscribblers')

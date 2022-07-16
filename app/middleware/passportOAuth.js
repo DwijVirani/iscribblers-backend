@@ -8,12 +8,17 @@ module.exports = (passport) => {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'https://iscribblers-dev-backend.herokuapp.com/api/auth/google/callback',
+        callbackURL:
+          process.env.GOOGLE_CALLBACK_URL || 'https://iscribblers-dev-backend.herokuapp.com/api/auth/google/callback',
         passReqToCallback: true,
       },
       async function (request, accessToken, refreshToken, profile, done) {
-        const user = await userService.findOrCreate(profile);
-        return done(null, user);
+        try {
+          const user = await userService.findOrCreate(profile);
+          return done(null, user);
+        } catch (e) {
+          throw e;
+        }
       },
     ),
   );

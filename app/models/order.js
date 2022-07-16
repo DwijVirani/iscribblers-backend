@@ -61,4 +61,4 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true, usePushEach: true }, // UTC format
 );
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('order', orderSchema);

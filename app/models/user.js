@@ -99,7 +99,7 @@ userSchema.methods = {
     return jwt.sign(
       {
         id: this._id,
-        name: this.name,
+        first_name: this.first_name,
         email: this.email,
       },
       EXPRESS_SECRET,
@@ -116,6 +116,7 @@ userSchema.methods = {
       country_code: this.country_code,
       email: this.email,
       token: `${this.createToken()}`,
+      is_new: 0,
     };
   },
 

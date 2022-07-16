@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/user');
 const constants = require('../config/constants');
 const { sendEmail } = require('../utils/sendgrid');
+const { USER_TYPE } = require('../config/constants');
 
 class UserService {
   /**
@@ -37,13 +38,14 @@ class UserService {
       };
       if (!user) {
         const newUser = await this.addNewUser(userPayload);
-        return newUser;
+        return { ...newUser, is_new: 1 };
       }
       if (user) return user.toAuthJSON();
     } catch (e) {
       throw e;
     }
   }
+
   async getUserByUsernameRaw(username) {
     const normalized_username = String(username).toUpperCase().trim();
     const user = await User.findOne({
@@ -140,7 +142,7 @@ class UserService {
               user.email,
               'Reset iScribblers Password',
               // eslint-disable-next-line max-len
-              `Hello ${user.name},<BR /> <a href="https://iscribblers-dev.herokuapp.com/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
+              `Hello ${user.name},<BR /> <a href="http://localhost:3000/api/auth/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
             );
 
             return resolve(true);
@@ -205,31 +207,26 @@ class UserService {
     }
   }
 
-  async updateUserProfile(user_id, avatar, name, phone, language) {
+  async updateUserProfile(user_id, payload) {
     try {
       const user = await User.findOne({
         _id: user_id,
       });
       if (!user) throw Error('User not exit');
 
-      const condition = {
-        _id: user_id,
-      };
-      const doc = {
-        name,
-        phone,
-        avatar,
-        language,
-      };
-      const promisResult = await new Promise(async (resolve, reject) => {
-        User.findOneAndUpdate(condition, doc, async (err) => {
-          if (err) reject(err);
-          return resolve(true);
-        });
-      });
-      if (promisResult) return this.getUser(user_id);
+      const result = await super.update(user_id, '', user_id, payload);
     } catch (err) {
       throw err;
+    }
+  }
+
+  async getCreatorList() {
+    try {
+      const result = await User.find({ role: USER_TYPE.CREATOR });
+      if (result) return result;
+      return undefined;
+    } catch (e) {
+      throw e;
     }
   }
 }
