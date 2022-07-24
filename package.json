@@ -37,6 +37,8 @@
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-jwt": "4.0.0",
+    "stripe": "8.20.0",
+    "uuid": "^8.3.2",
     "validator": "^13.7.0"
   }
 }

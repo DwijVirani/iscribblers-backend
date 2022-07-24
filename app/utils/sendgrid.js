@@ -1,4 +1,4 @@
-const { SENDGRID_API_KEY, SENDGRID_SENDER_EMAIL, NODE_ENV } = require('../config/env');
+const { SENDGRID_API_KEY, SENDGRID_SENDER_EMAIL } = require('../config/env');
 /**
  * Send email
  *
@@ -8,14 +8,12 @@ const { SENDGRID_API_KEY, SENDGRID_SENDER_EMAIL, NODE_ENV } = require('../config
  */
 async function sendEmail(to, subject, body, attachments) {
   try {
-    // if (NODE_ENV !== 'production') return true;
     const sgMail = require('@sendgrid/mail');
     sgMail.setApiKey(SENDGRID_API_KEY);
-    if (Array.isArray(to) === false) to = to.replace(';', ',').split(',');
     const clientMsg = {
       to,
       from: SENDGRID_SENDER_EMAIL,
-      subject: subject || 'Email from AryaAccounting',
+      subject: subject || 'Email from iScribblers',
       html: body,
       attachments,
     };

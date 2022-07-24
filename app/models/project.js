@@ -7,19 +7,19 @@ const Schema = mongoose.Schema;
 const projectSchema = new mongoose.Schema(
   {
     project_type: {
-      type: Number,
+      type: String,
       required: true,
     },
     project_name: {
       type: String,
       required: true,
     },
-    industry: {
-      type: Number,
+    genre: {
+      type: String,
       required: true,
     },
-    sub_industry: {
-      type: Number,
+    sub_genre: {
+      type: String,
       required: true,
     },
     target_audience: {
@@ -81,21 +81,25 @@ const projectSchema = new mongoose.Schema(
       },
     ],
     conent_language: {
-      type: Number,
+      type: String,
       required: true,
     },
-    content_intent: {
-      type: Number,
-      required: true,
-    },
+    content_intent: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     content_perpective: {
-      type: Number,
+      type: String,
       required: true,
     },
-    content_tone: {
-      type: Number,
-      required: true,
-    },
+    content_tone: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     outline_structure: [
       {
         instructions: {
@@ -168,6 +172,13 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    transaction_id: {
+      type: String,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User,
@@ -194,8 +205,8 @@ projectSchema.methods = {
       id: this._id,
       project_type: this.project_type,
       project_name: this.project_name,
-      industry: this.industry,
-      sub_industry: this.sub_industry,
+      genre: this.genre,
+      sub_genre: this.sub_genre,
       target_audience: this.target_audience,
       project_purpose: this.project_purpose,
       status: this.status,
@@ -254,6 +265,12 @@ projectSchema.methods = {
       zip_code: this.zip_code,
       state: this.state,
       gst_number: this.gst_number,
+      amount: this.amount,
+      transaction_id: this.transaction_id,
+      createdBy: this.createdBy,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      updatedBy: this.updatedBy,
     };
   },
 };

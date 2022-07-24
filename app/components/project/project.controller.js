@@ -46,6 +46,17 @@ class ProjectController {
       return createError(res, e);
     }
   }
+
+  async payment(req, res) {
+    try {
+      const { user } = req;
+      const { id } = req.params;
+      const result = await ProjectService.payment(user.id, id);
+      if (result) return createResponse(res, 'ok', 'Project payment successful', result);
+    } catch (e) {
+      return createError(res, e);
+    }
+  }
 }
 
 const controller = new ProjectController();

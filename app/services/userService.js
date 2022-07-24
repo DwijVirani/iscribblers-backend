@@ -10,8 +10,8 @@ class UserService {
    */
   async getUser(id) {
     try {
-      const result = await User.find({ _id: id });
-      return result;
+      const result = await User.findOne({ _id: id });
+      return result.toJSON();
     } catch (e) {
       throw e;
     }

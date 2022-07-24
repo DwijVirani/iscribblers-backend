@@ -77,4 +77,23 @@ router.delete(
   },
 );
 
+/**
+ * @route POST api/project/make-payment/:id
+ * @description create
+ * @returns JSON
+ * @access public
+ */
+router.post(
+  '/make-payment/:id',
+  [
+    passport.authenticate('jwt', { session: false, failWithError: true }),
+    PassportErrorHandler.success,
+    PassportErrorHandler.error,
+  ],
+  //   validations.getSingle,
+  (req, res) => {
+    controller.payment(req, res);
+  },
+);
+
 module.exports = router;

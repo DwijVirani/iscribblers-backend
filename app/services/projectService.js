@@ -1,12 +1,16 @@
+const uuid = require('uuid');
 const Project = require('../models/project');
+const UserService = require('./userService');
 const RepositoryService = require('./repositoryService');
+const env = require('./../config/env');
 
+const stripe = require('stripe')(env.STRIPE_SECRET_KEY);
 const validateProjectInputs = (project) => {
   try {
     if (!project.project_type) throw Error('Project type is required');
     else if (!project.project_name) throw Error('Project name is required');
-    else if (!project.industry) throw Error('Industry is required');
-    else if (!project.sub_industry) throw Error('Sub industry name is required');
+    else if (!project.genre) throw Error('Project genre is required');
+    else if (!project.sub_genre) throw Error('Project sub genre name is required');
     else if (!project.target_audience) throw Error('Target audience is required');
     else if (!project.project_purpose) throw Error('Project purpose is required');
     else if (!project.content_title) throw Error('Content title is required');
@@ -80,6 +84,39 @@ class ProjectService extends RepositoryService {
 
       const result = await Project.delete({ _id: id });
       return true;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async payment(userId, projectId) {
+    try {
+      const project = await this.getSingle(userId, projectId);
+      if (!project) throw Error('Project does not exists');
+
+      const user = await UserService.getUser(userId);
+      if (!user) return;
+
+      console.log('project', project.amount);
+      const idempotencyKey = uuid.v4();
+      const customer = await stripe.customers.create({
+        email: user.email,
+        source: user.id,
+      });
+      console.log(customer);
+      if (customer) {
+        const result = await stripe.charges.create(
+          {
+            amount: project.price * 100,
+            currency: 'inr',
+            customer: customer.id,
+            receipt_email: customer.email,
+            description: `Payment for project: ${project.project_name} is successfull`,
+          },
+          { idempotencyKey },
+        );
+        console.log('result', result);
+      }
     } catch (e) {
       throw e;
     }
