@@ -3,8 +3,12 @@ const User = require('../models/user');
 const constants = require('../config/constants');
 const { sendEmail } = require('../utils/sendgrid');
 const { USER_TYPE } = require('../config/constants');
+const RepositoryService = require('./repositoryService');
 
-class UserService {
+class UserService extends RepositoryService {
+  constructor() {
+    super(User);
+  }
   /**
    * @description Get User
    */
@@ -220,11 +224,38 @@ class UserService {
     }
   }
 
+  async addUserPhoneAndRole(userId, payload) {
+    try {
+      const user = await User.findOne({
+        _id: userId,
+      });
+      if (!user) throw Error('User not exit');
+
+      payload.is_new = 0;
+      const result = await User.findOneAndUpdate({ _id: userId }, payload, { new: true });
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getCreatorList() {
     try {
       const result = await User.find({ role: USER_TYPE.CREATOR });
       if (result) return result;
       return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getUserDetails(userId) {
+    try {
+      if (userId) {
+        const user = await User.findOne({ _id: userId });
+        if (user) return user.toJSON();
+        return undefined;
+      }
     } catch (e) {
       throw e;
     }

@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 const Project = require('../models/project');
+const Invoice = require('../models/invoice');
 const UserService = require('./userService');
 const RepositoryService = require('./repositoryService');
 const env = require('./../config/env');
@@ -111,12 +112,50 @@ class ProjectService extends RepositoryService {
             currency: 'inr',
             customer: customer.id,
             receipt_email: customer.email,
-            description: `Payment for project: ${project.project_name} is successfull`,
+            description: `Payment for project: ${project.project_name} is successful`,
           },
           { idempotencyKey },
         );
         console.log('result', result);
       }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async isInvoiceNumberExist(userId, companyId, type, invoice_no, id) {
+    try {
+      let query = { cid: companyId, type, number: invoice_no };
+      if (id) query = { cid: companyId, type, number: invoice_no, _id: { $ne: id } };
+
+      const result = await new Promise((resolve, reject) => {
+        Invoice.countDocuments(query, (err, count) => {
+          if (err) return reject(err);
+          return resolve(count);
+        });
+      });
+      if (result > 0) return true;
+      return false;
+    } catch (e) {
+      throw e;
+    }
+  }
+  async getNextInvoice() {
+    try {
+      const result = await Invoice.findOne({}).sort({ date: -1, createdAt: -1 });
+      const lastInvoiceNo = result ? result.number : ``;
+      const next_number = getNextNumber(next_number || lastInvoiceNo, `INV-${moment().format('YY')}-`);
+
+      return next_number;
+    } catch (e) {
+      throw e;
+    }
+  }
+  async createInvoice(userId) {
+    try {
+      const invoicePayload = {
+        number: await this.getNextInvoice(),
+      };
     } catch (e) {
       throw e;
     }

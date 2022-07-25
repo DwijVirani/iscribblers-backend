@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+  <title>Bearbook</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,600,900" rel="stylesheet">
+  <style>
+    body {
+      font-size: 11px;
+    }
+
+    .table-heading th {
+      padding: 3px 10px;
+      font-weight: 700;
+      background-color: #fafafa;
+    }
+
+    .table-data td {
+      padding: 2px 10px;
+    }
+
+    .invoice-date-info,
+    .invoice-date-info * {
+      box-sizing: border-box;
+    }
+
+
+
+
+    /* Invoice Title and Date */
+    .invoice-date-info {
+      border-top: 1px solid #000000;
+      border-bottom: 1px solid #000000;
+      background-color: #fafafa;
+      vertical-align: middle;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
+    .invoice-date-info h2 {
+      margin: 0;
+      padding: 0 10px 0 15px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000000;
+      display: inline-block;
+      width: 18%;
+      vertical-align: middle;
+      line-height: 1;
+      word-wrap: normal;
+    }
+
+    .invoice-date-info ul {
+      margin: 0 -10px 0 0;
+      padding: 0;
+      list-style: none;
+      vertical-align: middle;
+      text-align: right;
+      display: inline-block;
+      width: 82%;
+    }
+
+    .invoice-date-info ul li {
+      display: inline-block;
+      padding: 3px 10px 3px 0;
+      color: #000000;
+    }
+
+    .invoice-date-info ul li span {
+      color: #000000;
+      padding-right: 5px;
+    }
+
+
+
+
+    .total-table-data {
+      border-top: 1px solid #000000;
+    }
+
+
+    .terms-and-conditions {
+      width: 70%;
+      padding: 10px 0 10px 10px;
+      vertical-align: top;
+    }
+
+    .authorization-signature {
+      vertical-align: bottom;
+    }
+
+
+    .gst-and-account-information {
+      padding: 0;
+      vertical-align: bottom;
+      height: 98px;
+      border-right: 1px solid #000000;
+    }
+
+    .gst-and-account-information table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+    }
+
+    .gst-and-account-information table tr th {
+      font-weight: 700;
+      border-bottom: 1px solid #666666;
+      padding: 2px 4px;
+      text-align: center;
+      border-left: 1px solid #666666;
+      line-height: 1;
+    }
+
+    .gst-and-account-information table tr th:first-of-type {
+      border-left: none;
+    }
+
+    .gst-and-account-information table tr th.text-center {
+      text-align: center;
+    }
+
+    .gst-and-account-information table tr td {
+      padding: 4px 4px;
+      text-align: right;
+      line-height: 1;
+      vertical-align: top;
+    }
+
+    .gst-and-account-information table tr.tfoot td {
+      padding: 2px 4px;
+      text-align: right;
+      font-weight: 700;
+      border: 1px solid #666666;
+      border-right: none;
+      border-bottom: none;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    .gst-and-account-information table tr.tfoot td:first-of-type {
+      border-left: none;
+    }
+
+    .ith-business-name span {
+      width: 150px;
+      height: 50px;
+      display: inline-block;
+    }
+
+    .ith-business-name span img {
+      height: 100%;
+      width: auto;
+    }
+
+    .invoice-table-qty-and-units {
+      display: flex;
+      justify-content: center;
+      display: -webkit-flex;
+      -webkit-justify-content: center;
+    }
+
+    .invoice-table-qty-and-units .text-left {
+      padding-left: 5px !important;
+      color: #000000;
+      text-align: left;
+    }
+
+    .invoice-table-qty-and-units .text-right {
+      text-align: right;
+    }
+
+    .table-data .invoice-table-qty-and-units td {
+      padding: 0;
+    }
+
+    @media print {
+      table {
+        page-break-inside: auto
+      }
+
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+      }
+
+      thead {
+        display: table-header-group
+      }
+
+      tfoot {
+        display: table-footer-group
+      }
+    }
+
+    /* .unbreakable{
+            display: block;
+        }
+        .unbreakable:after{
+            display:block;
+            height:0px;
+            visibility: hidden;
+        } */
+
+    .product_item_listing {
+      height: 300px;
+    }
+
+    .table-data:last-child,
+    .table-data:last-of-type {
+      height: 100%;
+    }
+
+    .taxable_amount_righ_total {
+      vertical-align: top;
+    }
+  </style>
+</head>
+
+<body style="margin: 0;">
+  <table
+    style="border-collapse: collapse; width: 100%; background-color: #ffffff; margin-right: auto; margin-left: auto; font-family: 'Roboto', sans-serif; color: #000000; border: 1px solid #000000;">
+
+
+    <!-- Item List and Totals -->
+    <tr>
+      <td class="unbreakable" style="padding: 0;" colspan="2">
+        <table id="header" style="border-collapse: collapse; width: 100%;">
+          <!-- Header -->
+          <tr>
+            <td colspan="2">
+              <table style="width: 100%; padding: 10px 12px;">
+                <tbody>
+                  <tr>
+                    <td class="ith-business-name" style="width: 20%;">
+                      <span><img src="{{:company.logo_url}}" alt="Logo"
+                          style="max-width: 100%; max-height: 100%; height: auto;"></span>
+                    </td>
+                    <td style="width: 80%;">
+                      <p style="margin: 0 0 5px 0; font-size: 12px; font-weight: 700; line-height: 12px;">
+                        {{:company.name}}</p>
+
+                      <p style="margin: 0 0 0 0; line-height: 20px; white-space: pre-wrap;">{{:company.address_line1}}{{:company.address_line2}}{{:company.city}} {{:company.state}} {{:company.pincode}}</p>
+                      <ul style="margin: 0; padding: 5px 0 0 0; list-style: none;">
+                        {{if company.gst_number}}
+                        <li style="display: inline-block; padding-right: 10px;">
+                          <span style="color: #000000;">GSTIN:</span>&nbsp;{{:company.gst_number}}
+                        </li>
+                        {{/if}}
+                        {{if company.email}}
+                        <li style="display: inline-block; padding-right: 10px;">
+                          <span style="color: #000000;">Email:</span>&nbsp;{{:company.email}}
+                        </li>
+                        {{/if}}
+                        {{if company.mobile}}
+                        <li style="display: inline-block;">
+                          <span style="color: #000000;">Mobile:</span>&nbsp;{{:company.mobile}}
+                        </li>
+                        {{/if}}
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Invoice -->
+          <tr>
+            <td style="padding: 0;" colspan="2">
+              <table style="border-collapse: collapse; width: 100%;">
+                <tr>
+                  <td class="invoice-date-info">
+
+                    <h2>{{:title}}</h2>
+                    <ul>
+                      <li><span>Date:</span>{{:invoice.date_formatted }}</li>
+                      {{if invoice.due_date_formatted}}
+                      <li><span>Date Due:</span>{{:invoice.due_date_formatted }}</li>
+                      {{/if}}
+                      {{if invoice.number}}
+                      <li><span>Number:</span>{{:invoice.number}}</li>
+                      {{/if}}
+                      {{if invoice.sales_person}}
+                      <li>
+                        <span>
+                          Sales Person:
+                        </span>{{:invoice.sales_person.company_name}}
+                      </li>
+                      {{/if}}
+                    </ul>
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Bill To And Ship To -->
+          <tr>
+            <td style="padding: 0;" colspan="2">
+              <table align="top" style="border-collapse: collapse; width: 100%;">
+                <tr style="vertical-align: top;">
+                  <td style="width: 50%; border-right: 1px solid #000000; padding: 8px;">
+                    <table>
+                      <tr>
+                        <td colspan="2">
+                          <span
+                            style="text-transform: uppercase; font-size: 10px; color: #000000; font-weight: 700; text-transform: uppercase; font-size: 10px;">
+                            {{if invoice.type==2}}
+                            Bill From:
+                            {{else}}
+                            Bill To:
+                            {{/if}}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 0px;">
+                          <p
+                            style="margin: 0; font-size: 12px; font-weight: 700; padding-bottom: 5px; line-height: 12px;">
+                            {{:invoice.contact.company_name}}</p>
+                          <p style="margin: 0; color: #000000; padding-bottom:4px; line-height: 1.3;">
+                            {{:invoice.billing_address.addressLine1}} {{:invoice.billing_address.addressLine2}}
+                            {{:invoice.billing_address.city}} {{:invoice.billing_address.state}}
+                            {{:invoice.billing_address.pincode}}</p>
+
+                          {{if invoice.contact.gst_no}}
+                          <p style="margin: 0; color: #000000; padding-bottom:4px;">
+                            <span>GSTIN:</span>{{:invoice.contact.gst_no}}
+                          </p>
+                          {{/if}}
+                          <p style="display: inline-block; margin: 0; color: #000000;">
+                            {{:invoice.contact.email?''+invoice.contact.email:''}}</p><br/>
+                          {{if mobile_numbers_formatted && mobile_numbers_formatted.length > 0}}
+                          <p style="display: inline-block; margin: 0; color: #000000; padding-bottom:4px;"></p><br/>
+                            <span>Phone: </span>{{:mobile_numbers_formatted}}
+                          {{/if}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  {{if invoice.type!=2 }}
+                  <td style="width: 50%; padding: 8px;">
+                    <table>
+                      <tr>
+                        <td colspan="2">
+                          <span
+                            style="text-transform: uppercase; font-size: 10px; color: #000000; font-weight: 700; text-transform: uppercase; font-size: 10px;">Ship
+                            to:</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top: 0px;">
+                          <p
+                            style="margin: 0; font-size: 12px; font-weight: 700; padding-bottom: 5px; line-height: 12px;">
+                            {{:invoice.contact.company_name}}</p>
+                          <p style="margin: 0; color: #000000; padding-bottom:4px; line-height: 1.3;">
+                            {{:invoice.shipping_address.addressLine1}} {{:invoice.shipping_address.addressLine2}}
+                            {{:invoice.shipping_address.city}} {{:invoice.shipping_address.state}}
+                            {{:invoice.shipping_address.zipCode}}</p>
+                          {{if invoice.shipping_address.state_code}}
+                          <p style="margin: 0; color: #000000; padding-bottom:4px;">Place Of Supply :
+                            {{:invoice.shipping_address.state}}({{:invoice.shipping_address.state_code}})</p>
+                          {{/if}}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  {{/if}}
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <table id="content" class="product_item_listing"
+          style="border-collapse: collapse; width: 100%; padding: 10px 0 10px 0; border-top: 1px solid #000000;">
+          <thead style="border-bottom: 1px solid #000000;">
+            <tr class="table-heading">
+              <th style="text-align: center;"></th>
+              <th style="text-align: left;">Item Name</th>
+              <th style="text-align: left;">HSN/SAC</th>
+              <th style="text-align: center;">
+                <table>
+                  <tr>
+                    <td class="text-right"><span>Qty</span></td>
+                    <td class="text-left"><span></span></td>
+                  </tr>
+                </table>
+              </th>
+              <th style="text-align: right;">Rate</th>
+              {{if invoice.total_discount != 0}}
+              <th style="text-align: right;">Disc</th>
+              {{/if}}
+              {{if invoice.total_tax && invoice.total_tax !=0}}
+              <th style="text-align: right;">GST</th>
+              {{/if}}
+              <th style="text-align: right;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{for invoice.items}}
+            <tr class="table-data" style="vertical-align: top;">
+              <td style="text-align: center;">{{:#index+1}}</td>
+              {{if product && product.name}}
+              <td style="text-align: left; display: inline-block; white-space: pre-wrap;">{{:product.name}}<br />{{if desc}}{{:desc}}{{/if}}{{if invoice && invoice.number}}<span style="width:100%; display: inline-block;">{{:invoice.number}}</span>{{/if}}</td>
+              {{/if}}
+              {{if product_name}}
+              <td style="text-align: left; display: inline-block; white-space: pre-wrap;">{{:product_name}}<br /><br />{{if desc}}{{:desc}}{{/if}}{{if invoice && invoice.number}}<span style="width:100%; display: inline-block;">{{:invoice.number}}</span>{{/if}}</td>
+              {{/if}}
+              <td style="text-align: left;">{{:hsn_code}}</td>
+              <td style="text-align: center;" class="invoice-table-qty-and-units">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td class="text-right"><span>{{:qty}}</span></td>
+                      <td class="text-left"><span>Pcs</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td style="text-align: right;">{{:rate }}</td>
+              {{if is_discount && is_discount != 0}}
+                {{if discount_type === 1}}
+                <td style="text-align: right;">₹{{:discount}}</td>
+                {{else}}
+                <td style="text-align: right;">{{:discount}}%</td>
+                {{/if}}
+              {{/if}}
+              {{if is_tax && is_tax != 0}}
+              <td style="text-align: right;">{{:tax_rate}}%</td>
+              {{/if}}
+              <td style="text-align: right;">{{:amount }}</td>
+            </tr>
+            {{/for}}
+          </tbody>
+        </table>
+
+        <table style="border-collapse: collapse; width: 100%;" id="footer">
+
+          <tr class="table-data total-table-data">
+            <td colspan="4" style="border-bottom: 1px solid #000000; padding: 0;">
+              <table>
+                <tr>
+                  <td><strong>Total Qty</strong></td>
+                  <td class="invoice-table-qty-and-units">
+                    <table>
+                      <tr>
+                        <td class="text-right">{{:invoice.total_qty}}</td>
+                        <td class="text-left"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Total -->
+          <tr>
+            <td colspan="1" class="gst-and-account-information">
+              <table style="width: 100%;">
+
+                <tr class="thead">
+                  <th rowspan="2" class="text-right">Taxable Amount</th>
+                  <th colspan="2" class="text-center">CGST</th>
+                  <th colspan="2" class="text-center">SGST</th>
+                  <th colspan="2" class="text-center">IGST</th>
+                </tr>
+                <tr class="thead">
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                </tr>
+
+                {{for taxes}}
+                <tr>
+                  <td>{{:amount}}</td>
+                  <td>{{:tax_rate}}%</td>
+                  <td>{{:cgst}}</td>
+                  <td>{{:tax_rate}}%</td>
+                  <td>{{:sgst}}</td>
+                  <td>{{:tax_rate}}%</td>
+                  <td>{{:igst}}</td>
+                </tr>
+                {{/for}}
+                {{if taxes_total && taxes_total.total_taxable_amount}}
+                <tr class="tfoot">
+                  <td>{{:taxes_total.total_taxable_amount}}</td>
+                  <td colspan="2">{{:taxes_total.total_cgst}}</td>
+                  <td colspan="2">{{:taxes_total.total_sgst}}</td>
+                  <td colspan="2">{{:taxes_total.total_igst}}</td>
+                </tr>
+                {{/if}}
+                {{if !taxes_total || taxes_total.total_taxable_amount === 0}}
+                <tr class="tfoot">
+                  <td>0</td>
+                  <td colspan="2">0</td>
+                  <td colspan="2">0</td>
+                  <td colspan="2">0</td>
+                </tr>
+                {{/if}}
+
+              </table>
+            </td>
+
+
+            <td style="padding: 0;" colspan="1" class="taxable_amount_righ_total">
+
+              <table width="100%" style="border-collapse: collapse;">
+                <tbody>
+                  <tr style="vertical-align: top;">
+
+                    <td style="padding: 12px;">
+                      <table style="width: 100%;">
+                        <tr>
+                          <td style="padding-bottom: 2px; color: #000000;">Sub Total</td>
+                          <td style="padding-bottom: 2px; color: #000000; text-align: right;">
+                            {{:invoice.sub_total_amount}}</td>
+                        </tr>
+                        {{if invoice.total_discount!=0}}
+                        <tr>
+                          <td style="padding-bottom: 2px; color: #000000;">Discount</td>
+                          <td style="padding-bottom: 2px; color: #000000; text-align: right;">
+                            (-){{:invoice.total_discount}}</td>
+                        </tr>
+                        {{/if}}
+                        {{for invoice.additional_fields}}
+                        {{if amount!=0}}
+                        <tr>
+                          <td style="padding-bottom: 2px; color: #000000;">{{:name}}</td>
+                          <td style="padding-bottom: 2px; color: #000000; text-align: right;">{{:amount}}</td>
+                        </tr>
+                        {{/if}}
+                        {{/for}}
+                        {{if invoice.shipping_charge && invoice.shipping_charge!=0}}
+                        <tr>
+                          <td style="padding-bottom: 2px; color: #000000;">Shipping Charges</td>
+                          <td style="padding-bottom: 2px; color: #000000; text-align: right;">{{:invoice.shipping_charge}}</td>
+                        </tr>
+                        {{/if}}
+                        <tr>
+                          <td style="color: #000000; font-size: 12px; font-weight: 700;">Total (INR)</td>
+                          <td style="color: #000000; font-size: 12px; font-weight: 700; text-align: right;">
+                            {{:invoice.total_amount}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Rupee in Word -->
+          <tr class="rupee-in-word">
+            <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; padding: 5px 10px;" colspan="2">
+              <span><b style="font-weight: 400;">Rupees in Words:</b> {{:invoice.amount_in_word}} </span>
+            </td>
+          </tr>
+          <!-- bank details-->
+         {{if company.bank_account_number}}
+         <tr class="bank-in-word">
+          <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; padding: 5px 10px;" colspan="2">
+            <span style="margin-right: 20px;"><b style="font-weight: 400;">Bank Name:</b>
+              {{:company.bank_name}}</span>
+            <span style="margin-right: 20px;"><b style="font-weight: 400;">Account Number:</b>
+              {{:company.bank_account_number}}</span>
+            <span style="margin-right: 10px;"><b style="font-weight: 400;">IFSC Code: </b>
+              {{:company.bank_ifsc_code}}</span>
+          </td>
+        </tr>
+         {{/if}}
+          <!-- Authorization Signature -->
+          <tr>
+
+            <td class="terms-and-conditions" colspan="0">
+              <strong
+                style="padding-bottom: 10px; display: block; font-size: 10px; font-weight: normal;">Terms&nbsp;&amp;&nbsp;Conditions</strong>
+              <p style="margin: 0;white-space: pre-wrap;">{{:invoice.notes}}</p>
+            </td>
+
+            <td class="authorization-signature" style="padding-top: 0px;" colspan="1">
+              <table align="right">
+                <tbody>
+                  <tr>
+                    <td style="padding: 10px;">
+                      <span>For </span>{{:company.name}},
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 60px 10px 10px;">
+                      <span>Authorization Signature</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+  <script type="text/javascript">
+    var pageSize = 970;
+    var height_footer = document.getElementById('footer').clientHeight;
+    var height_header = document.getElementById('header').clientHeight;
+    var height_content = document.getElementById('content').clientHeight;
+    document.getElementById("content").style.height = pageSize - (height_footer + height_header) + 'px';
+  </script>
+</body>
+
+</html>

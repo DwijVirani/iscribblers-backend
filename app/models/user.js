@@ -128,6 +128,9 @@ userSchema.methods = {
       phone: this.phone,
       country_code: this.country_code,
       email: this.email,
+      avatar: this.avatar,
+      role: this.role,
+      is_new: 0,
     };
   },
 };

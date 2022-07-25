@@ -9,16 +9,23 @@ const passportJwtUtils = require('./passportJwtUtils');
 const passportOAuth = require('./passportOAuth');
 const session = require('express-session');
 const env = require('../config/env');
+const fileUpload = require('express-fileupload');
+
 class Middlewares {
   init(app) {
     app.set('PORT', process.env.PORT || 5000);
     app.use(compression());
-    app.use(cors());
+    app.use(
+      cors({
+        origin: '*',
+      }),
+    );
     app.use(helmet());
     app.use(bodyParser.json({ limit: '7mb' }));
     app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
     // Init i18n into middleware
     app.use(i18n.init);
+    app.use(fileUpload());
 
     /**
      * Passport middleware init

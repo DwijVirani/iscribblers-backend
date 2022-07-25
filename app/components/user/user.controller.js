@@ -60,6 +60,36 @@ class AuthController {
       createError(res, e);
     }
   }
+
+  async getUserDetails(req, res) {
+    try {
+      const { user } = req;
+      const result = await UserService.getUserDetails(user.id);
+      if (result) {
+        createResponse(res, 'ok', 'User Details', result);
+      } else {
+        createError(res, {}, { message: 'Unable to get user details' });
+      }
+    } catch (e) {
+      createError(res, e);
+    }
+  }
+
+  async addUserPhoneAndRole(req, res) {
+    try {
+      const { user } = req;
+      const payload = { ...req.body };
+      console.log('payload', payload);
+      const result = await UserService.addUserPhoneAndRole(user.id, payload);
+      if (result) {
+        createResponse(res, 'ok', 'User Details', result);
+      } else {
+        createError(res, {}, { message: 'Unable to get user details' });
+      }
+    } catch (e) {
+      createError(res, e);
+    }
+  }
 }
 
 const authController = new AuthController();

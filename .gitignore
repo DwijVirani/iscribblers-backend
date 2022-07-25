@@ -13,3 +13,4 @@ yarn-error.log*
 mochawesome-report/
 *.csv
 app/logs
+google.json
