@@ -57,6 +57,19 @@ class ProjectController {
       return createError(res, e);
     }
   }
+
+  async updateStatus(req, res) {
+    try {
+      const { user } = req;
+      const { id } = req.params;
+      const payload = req.body.status;
+      const item = await ProjectService.updateStatus(user.id, id, payload);
+      if (item) return createResponse(res, 'ok', 'Project status updated successfully', item);
+      else return createError(res, { message: 'Unable to update status' });
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 const controller = new ProjectController();

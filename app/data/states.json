@@ -1,0 +1,309 @@
+[
+    {
+      "id": "35",
+      "name": "Andaman & Nicobar Islands",
+      "code": "AN",
+      "gst_state_code": 35,
+      "country_code": "IN",
+      "country": "India",
+      "name2": "Andaman and Nicobar Islands"
+    },
+    {
+      "id": "28",
+      "name": "Andhra Pradesh",
+      "code": "AD",
+      "gst_state_code": 28,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "37",
+      "name": "Andra Pradesh(New)",
+      "code": "AD-New",
+      "gst_state_code": 37,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "12",
+      "name": "Arunachal Pradesh",
+      "code": "AP",
+      "gst_state_code": 12,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "18",
+      "name": "Assam",
+      "code": "AS",
+      "gst_state_code": 18,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "10",
+      "name": "Bihar",
+      "code": "BR",
+      "gst_state_code": 10,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "04",
+      "name": "Chandigarh",
+      "code": "CH",
+      "gst_state_code": 4,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "22",
+      "name": "Chhattisgarh",
+      "code": "CG",
+      "gst_state_code": 22,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "26",
+      "name": "Dadra & Nagar Haveli",
+      "code": "DN",
+      "gst_state_code": 26,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "25",
+      "name": "Daman & Diu",
+      "code": "DD",
+      "gst_state_code": 25,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "07",
+      "name": "Delhi",
+      "code": "DL",
+      "gst_state_code": 7,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "30",
+      "name": "Goa",
+      "code": "GL",
+      "gst_state_code": 30,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "24",
+      "name": "Gujarat",
+      "code": "GJ",
+      "gst_state_code": 24,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "06",
+      "name": "Haryana",
+      "code": "HR",
+      "gst_state_code": 6,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "02",
+      "name": "Himachal Pradesh",
+      "code": "HP",
+      "gst_state_code": 2,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "01",
+      "name": "Jammu & Kashmir",
+      "code": "JK",
+      "gst_state_code": 1,
+      "country_code": "IN",
+      "country": "India",
+      "name2": "Jammu and Kashmir"
+    },
+    {
+      "id": "20",
+      "name": "Jharkhand",
+      "code": "JH",
+      "gst_state_code": 20,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "29",
+      "name": "Karnataka",
+      "code": "KA",
+      "gst_state_code": 29,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "32",
+      "name": "Kerala",
+      "code": "KL",
+      "gst_state_code": 32,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "38",
+      "name": "Ladakh",
+      "code": "LA",
+      "gst_state_code": 38,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "31",
+      "name": "Lakshdweep",
+      "code": "LD",
+      "gst_state_code": 31,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "23",
+      "name": "Madhya Pradesh",
+      "code": "MP",
+      "gst_state_code": 23,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "27",
+      "name": "Maharashtra",
+      "code": "MH",
+      "gst_state_code": 27,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "14",
+      "name": "Manipur",
+      "code": "MN",
+      "gst_state_code": 14,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "17",
+      "name": "Meghalaya",
+      "code": "ML",
+      "gst_state_code": 17,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "15",
+      "name": "Mizoram",
+      "code": "MZ",
+      "gst_state_code": 15,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "13",
+      "name": "Nagaland",
+      "code": "NL",
+      "gst_state_code": 13,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "21",
+      "name": "Odisha",
+      "code": "OD",
+      "gst_state_code": 21,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "34",
+      "name": "Pondicherry",
+      "code": "PY",
+      "gst_state_code": 34,
+      "country_code": "IN",
+      "country": "India",
+      "name2": "Puducherry"
+    },
+    {
+      "id": "03",
+      "name": "Punjab",
+      "code": "PB",
+      "gst_state_code": 3,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "08",
+      "name": "Rajasthan",
+      "code": "RJ",
+      "gst_state_code": 8,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "11",
+      "name": "Sikkim",
+      "code": "SK",
+      "gst_state_code": 11,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "33",
+      "name": "Tamil Nadu",
+      "code": "TN",
+      "gst_state_code": 33,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "36",
+      "name": "Telangana",
+      "code": "TS",
+      "gst_state_code": 36,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "16",
+      "name": "Tripura",
+      "code": "TR",
+      "gst_state_code": 16,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "09",
+      "name": "Uttar Pradesh",
+      "code": "UP",
+      "gst_state_code": 9,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "05",
+      "name": "Uttarakhand",
+      "code": "UA",
+      "gst_state_code": 5,
+      "country_code": "IN",
+      "country": "India"
+    },
+    {
+      "id": "19",
+      "name": "West Bengal",
+      "code": "WB",
+      "gst_state_code": 19,
+      "country_code": "IN",
+      "country": "India"
+    }
+  ]

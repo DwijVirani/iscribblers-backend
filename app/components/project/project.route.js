@@ -96,4 +96,16 @@ router.post(
   },
 );
 
+router.put(
+  '/update-status/:id',
+  [
+    passport.authenticate('jwt', { session: false, failWithError: true }),
+    PassportErrorHandler.success,
+    PassportErrorHandler.error,
+  ],
+  (req, res) => {
+    controller.updateStatus(req, res);
+  },
+);
+
 module.exports = router;

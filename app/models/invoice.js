@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 const project = require('./project');
+const tax = require('./tax');
 const Schema = mongoose.Schema;
 
 const invoiceSchema = new mongoose.Schema(
@@ -22,33 +23,23 @@ const invoiceSchema = new mongoose.Schema(
     },
     items: [
       {
-        product: {
+        project: {
           type: Schema.Types.ObjectId,
           ref: project,
-          required: true,
-        },
-        hsn_code: { type: String, trim: true, required: false },
-        qty: {
-          type: Number,
           required: true,
         },
         rate: {
           type: Number,
           required: true,
         },
-        //   tax_inclusive_rate: {
-        //     type: Number,
-        //     trim: true,
-        //     required: false,
-        //   },
         discount: {
           type: Number,
         },
-        //   tax: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: tax,
-        //     required: true,
-        //   },
+        tax: {
+          type: Schema.Types.ObjectId,
+          ref: tax,
+          required: true,
+        },
         tax_rate: {
           type: Schema.Types.Number,
           required: true,
@@ -96,6 +87,9 @@ const invoiceSchema = new mongoose.Schema(
   },
   { timestamps: true, usePushEach: true },
 );
+
+invoiceSchema.plugin(mongooseDelete, { overrideMethods: true, deletedAt: true });
+
 invoiceSchema.methods = {
   toJSONWithObject(hasFullInvoice = false) {
     return {
@@ -109,14 +103,11 @@ invoiceSchema.methods = {
       items: hasFullInvoice
         ? this.items.map((item) => {
             // eslint-disable-next-line no-shadow
-            const product = item.product && !isNull(item.product) ? item.product.toJSON() : {};
-            if (item.product_details) product.name = item.product_details.name;
+            const project = item.project && !isNull(item.project) ? item.project.toJSON() : {};
             return {
               id: item._id,
-              product,
+              project,
               desc: item.desc,
-              hsn_code: item.hsn_code || product.hsn_code,
-              qty: item.qty,
               rate: mathRounding(item.rate, 3),
               discount: item.discount,
               tax: item.tax && !isNull(item.tax) ? item.tax.toJSON() : undefined,

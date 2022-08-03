@@ -1,0 +1,153 @@
+[
+    {
+      "name": "Tax Exempt",
+      "description": "Tax Exempt (0%)",
+      "tax_rate": 0,
+      "type": 0
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 0.05,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 0.125,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 1.25,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 1.5,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 2.5,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 6,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 9,
+      "type": 1
+    },
+    {
+      "name": "CGST",
+      "description": "CGST",
+      "tax_rate": 14,
+      "type": 1
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 0.05,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 0.125,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 1.25,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 1.5,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 2.5,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 6,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 9,
+      "type": 2
+    },
+    {
+      "name": "SGST",
+      "description": "SGST",
+      "tax_rate": 14,
+      "type": 2
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 0.1,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 0.25,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 2.5,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 3,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 5,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 12,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 18,
+      "type": 3
+    },
+    {
+      "name": "IGST",
+      "description": "IGST",
+      "tax_rate": 28,
+      "type": 3
+    }
+  ]
+  

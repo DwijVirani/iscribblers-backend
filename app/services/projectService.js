@@ -1,11 +1,8 @@
-const uuid = require('uuid');
 const Project = require('../models/project');
-const Invoice = require('../models/invoice');
-const UserService = require('./userService');
 const RepositoryService = require('./repositoryService');
-const env = require('./../config/env');
+const realtimeService = require('./realtimeService');
+const { getZonalTime } = require('./../utils/helpers');
 
-const stripe = require('stripe')(env.STRIPE_SECRET_KEY);
 const validateProjectInputs = (project) => {
   try {
     if (!project.project_type) throw Error('Project type is required');
@@ -90,77 +87,42 @@ class ProjectService extends RepositoryService {
     }
   }
 
-  async payment(userId, projectId) {
+  async updateStatus(userId, id, payload) {
     try {
-      const project = await this.getSingle(userId, projectId);
+      const project = await this.getSingle(userId, id);
       if (!project) throw Error('Project does not exists');
 
-      const user = await UserService.getUser(userId);
-      if (!user) return;
-
-      console.log('project', project.amount);
-      const idempotencyKey = uuid.v4();
-      const customer = await stripe.customers.create({
-        email: user.email,
-        source: user.id,
-      });
-      console.log(customer);
-      if (customer) {
-        const result = await stripe.charges.create(
-          {
-            amount: project.price * 100,
-            currency: 'inr',
-            customer: customer.id,
-            receipt_email: customer.email,
-            description: `Payment for project: ${project.project_name} is successful`,
-          },
-          { idempotencyKey },
-        );
-        console.log('result', result);
-      }
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  async isInvoiceNumberExist(userId, companyId, type, invoice_no, id) {
-    try {
-      let query = { cid: companyId, type, number: invoice_no };
-      if (id) query = { cid: companyId, type, number: invoice_no, _id: { $ne: id } };
-
-      const result = await new Promise((resolve, reject) => {
-        Invoice.countDocuments(query, (err, count) => {
-          if (err) return reject(err);
-          return resolve(count);
-        });
-      });
-      if (result > 0) return true;
-      return false;
-    } catch (e) {
-      throw e;
-    }
-  }
-  async getNextInvoice() {
-    try {
-      const result = await Invoice.findOne({}).sort({ date: -1, createdAt: -1 });
-      const lastInvoiceNo = result ? result.number : ``;
-      const next_number = getNextNumber(next_number || lastInvoiceNo, `INV-${moment().format('YY')}-`);
-
-      return next_number;
-    } catch (e) {
-      throw e;
-    }
-  }
-  async createInvoice(userId) {
-    try {
-      const invoicePayload = {
-        number: await this.getNextInvoice(),
+      const projectPayload = {
+        status: payload,
+        status_update_time: new Date().toISOString(),
       };
+
+      const result = await Project.findOneAndUpdate({ _id: id }, projectPayload);
+      if (result) {
+        const item = await this.getSingle(userId, result.id);
+        realtimeService.emitToCompany(userId, 'project-status-updated', item);
+        return item;
+      }
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async autoUpdateStatus() {
+    try {
+      const date = new Date().getTime() + 21600000;
+      console.log(new Date(date).toISOString());
+
+      const projects = await Project.find({ status_update_time: { $gte: new Date(date).toISOString() } });
+      if (projects && projects.length > 0) {
+        const projectIds = project.map((x) => x._id);
+      }
     } catch (e) {
       throw e;
     }
   }
 }
 
-const service = new ProjectService();
-module.exports = service;
+const projectService = new ProjectService();
+module.exports = projectService;

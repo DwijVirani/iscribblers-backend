@@ -58,20 +58,16 @@ class RepositoryService {
       if (!id) throw new Error('Id is required');
       if (!payload) throw new Error('Data is required');
 
+      delete payload.createdBy;
+      delete payload.createdAt;
+
       const itemPayload = {
         ...payload,
         id,
-        updated_by: userId,
+        updatedBy: userId,
       };
 
-      const updatePromise = new Promise(async (resolve, reject) => {
-        const query = { _id: id };
-        await this.collection.findOneAndUpdate(query, itemPayload, { new: false }, (err, result) => {
-          if (err) reject(err);
-          return resolve(result);
-        });
-      });
-      const result = await updatePromise;
+      const result = await this.collection.findOneAndUpdate({ _id: id }, itemPayload, { new: false });
       if (result) return result.toJSON();
       return undefined;
     } catch (e) {

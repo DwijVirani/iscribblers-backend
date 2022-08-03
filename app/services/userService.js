@@ -127,35 +127,40 @@ class UserService extends RepositoryService {
   }
 
   async forgotPassword(username) {
-    const normalized_username = String(username).toUpperCase().trim();
-    const token = crypto.randomBytes(32).toString('hex');
-    const query = {
-      $or: [{ email: username }, { normalized_email: normalized_username }],
-    };
-    const userResult = await User.findOne(query);
-    if (userResult) {
-      const user = userResult.toJSON();
-      const promisResult = await new Promise(async (resolve, reject) => {
-        User.findOneAndUpdate(
-          query,
-          { resetPasswordToken: token, resetPasswordExpires: Date.now() + 3600000 },
-          { new: true },
-          async (err) => {
-            if (err) reject(err);
-            await sendEmail(
-              user.email,
-              'Reset iScribblers Password',
-              // eslint-disable-next-line max-len
-              `Hello ${user.name},<BR /> <a href="http://localhost:3000/api/auth/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
-            );
+    try {
+      const normalized_username = String(username).toUpperCase().trim();
+      const token = crypto.randomBytes(32).toString('hex');
+      const query = {
+        $or: [{ email: username }, { normalized_email: normalized_username }],
+      };
+      const userResult = await User.findOne(query);
+      if (userResult) {
+        const user = userResult.toJSON();
+        const promisResult = await new Promise(async (resolve, reject) => {
+          User.findOneAndUpdate(
+            query,
+            { resetPasswordToken: token, resetPasswordExpires: Date.now() + 3600000 },
+            { new: true },
+            async (err) => {
+              console.log('err', err);
+              if (err) reject(err);
+              await sendEmail(
+                user.email,
+                'Reset iScribblers Password',
+                // eslint-disable-next-line max-len
+                `Hello ${user.name},<BR /> <a href="http://localhost:3000/api/auth/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
+              );
 
-            return resolve(true);
-          },
-        );
-      });
-      return promisResult;
+              return resolve(true);
+            },
+          );
+        });
+        return promisResult;
+      }
+      return false;
+    } catch (e) {
+      throw e;
     }
-    return false;
   }
 
   async resetPassword(username, password, token) {

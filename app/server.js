@@ -4,6 +4,7 @@ const express = require('express');
 
 const app = express();
 const server = http.Server(app);
+const socketio = require('socket.io');
 // Init Router
 const favicon = require('express-favicon');
 const chalk = require('chalk');
@@ -11,6 +12,14 @@ const middlewares = require('./middleware');
 const routes = require('./routes');
 const env = require('./config/env');
 const connect = require('./config/database');
+const realTimeService = require('./services/realtimeService');
+const schedule = require('node-schedule');
+const projectService = require('./services/projectService');
+const io = socketio(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 // Initialize all middlewares here
 middlewares.init(app);
@@ -64,4 +73,17 @@ server.listen(process.env.PORT || 3000, () => {
     process.env.NODE_ENV,
   );
   console.log('  Press CTRL-C to stop\n');
+});
+
+io.on('connection', (socket) => {
+  console.log('%s New user connected', chalk.green('✓'));
+  realTimeService.setSocket(io, socket);
+});
+
+schedule.scheduleJob('*/60 * * * *', async function () {
+  try {
+    await projectService.autoUpdateStatus();
+  } catch (e) {
+    throw e;
+  }
 });

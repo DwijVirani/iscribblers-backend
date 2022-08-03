@@ -34,6 +34,10 @@ const projectSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status_update_time: {
+      type: Date,
+      required: false,
+    },
     content_title: {
       type: String,
       required: true,
@@ -166,6 +170,10 @@ const projectSchema = new mongoose.Schema(
     },
     state: {
       type: String,
+      required: true,
+    },
+    state_code: {
+      type: Number,
       required: true,
     },
     gst_number: {

@@ -1,7 +1,7 @@
 const bCrypt = require('bcrypt-nodejs');
 const _ = require('lodash');
 const { isEmpty, isString } = require('../validator');
-
+const momentTimezone = require('moment-timezone');
 /**
  * @param {Object} res
  * @param {String} status ok | error
@@ -322,6 +322,12 @@ exports.getLastUpdatedDate = (updatedItems = [], archivedItems = [], date) => {
   const maxTime = Math.max(maxCreatedAtTime, maxUpdatedAtTime, maxDeletedAtTime);
   if (maxTime > 0) return maxTime + 1;
   else return date;
+};
+
+exports.getZonalTime = (time, zone) => {
+  if (!time || !zone) return;
+  const zonalTime = momentTimezone(time).tz(zone);
+  return zonalTime;
 };
 
 exports.stringToBoolean = (value) => {
