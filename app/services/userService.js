@@ -142,13 +142,12 @@ class UserService extends RepositoryService {
             { resetPasswordToken: token, resetPasswordExpires: Date.now() + 3600000 },
             { new: true },
             async (err) => {
-              console.log('err', err);
               if (err) reject(err);
               await sendEmail(
                 user.email,
                 'Reset iScribblers Password',
                 // eslint-disable-next-line max-len
-                `Hello ${user.name},<BR /> <a href="http://localhost:3000/api/auth/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
+                `Hello ${user.first_name},<BR /> <a href="http://localhost:3000/api/auth/reset-password?token=${token}">Click here</a> for reset password <BR />iScribblers Team`,
               );
 
               return resolve(true);

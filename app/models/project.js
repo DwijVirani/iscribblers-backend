@@ -187,6 +187,22 @@ const projectSchema = new mongoose.Schema(
     transaction_id: {
       type: String,
     },
+    payments: {
+      projectId: {
+        type: String,
+      },
+      razorpayId: {
+        type: String,
+      },
+      signature: {
+        type: String,
+      },
+    },
+    is_paid: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User,

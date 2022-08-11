@@ -1,7 +1,9 @@
 const Invoice = require('../models/invoice');
 const Tax = require('../models/tax');
 const RepositoryService = require('./repositoryService');
-
+const { TAX_TYPES, TIMEZONE } = require('./../config/constants');
+const { getNextNumber, getZonalTime } = require('./../utils/helpers');
+const moment = require('moment');
 class InvoiceService extends RepositoryService {
   constructor() {
     super(Invoice);
@@ -24,21 +26,27 @@ class InvoiceService extends RepositoryService {
     }
   }
 
-  async getNextInvoice() {
+  async getNextInvoice(userId, companyId, type) {
     try {
       const result = await Invoice.findOne({}).sort({ date: -1, createdAt: -1 });
       const lastInvoiceNo = result ? result.number : ``;
-      const next_number = getNextNumber(next_number || lastInvoiceNo, `INV-${moment().format('YY')}-`);
-
+      let next_number;
+      let isExist = false;
+      do {
+        next_number = getNextNumber(next_number || lastInvoiceNo, `INV-${moment().format('YY')}-`);
+        isExist = await this.isInvoiceNumberExist(userId, companyId, type, next_number);
+      } while (isExist);
       return next_number;
     } catch (e) {
       throw e;
     }
   }
 
-  async createInvoice(userId, projectId) {
+  async create(userId, projectId) {
     try {
-      const project = await this.getSingle(userId, projectId);
+      const projectService = require('./projectService');
+
+      const project = await projectService.getSingle(userId, projectId);
       const taxList = await Tax.find({});
 
       const billingAddress = {
@@ -49,16 +57,21 @@ class InvoiceService extends RepositoryService {
         state_code: project.state_code,
         zip_code: project.zipcode,
       };
+      const date = new Date();
+      const localDate = getZonalTime(date, TIMEZONE.IST_TIMEZONE_NAME);
+      const formattedLocalDate = moment(localDate).format('YYYY-MMM-DD');
+
       const tax_rate = 18;
       const compnay_state_code = 24;
       const isSameState = Number(billingAddress.state_code) === Number(compnay_state_code);
+      let taxItem;
       if (isSameState) taxItem = taxList.find((x) => x.tax_rate === tax_rate && x.is_group === true);
       else taxItem = taxList.find((x) => x.tax_rate === tax_rate && x.type === TAX_TYPES.IGST);
 
       const taxAmount = (1 * project.amount * taxItem.tax_rate) / 100;
       const invoicePayload = {
         number: await this.getNextInvoice(),
-        date: moment(new Date()).format('YYYY-MMM-DD'),
+        date: formattedLocalDate,
         billing_address: billingAddress,
         shipping_address: billingAddress,
         items: [
@@ -66,7 +79,7 @@ class InvoiceService extends RepositoryService {
             project: project.id,
             rate: project.amount,
             discount: 0,
-            tax: taxItem._id,
+            tax: String(taxItem._id),
             tax_rate: taxItem.tax_rate,
             discount_amount: 0,
             tax_amount: taxAmount,
@@ -79,7 +92,8 @@ class InvoiceService extends RepositoryService {
         createdBy: userId,
         updatedBy: userId,
       };
-      await super.create(invoicePayload);
+      console.log('invoicePayload', invoicePayload);
+      await super.create(userId, invoicePayload);
     } catch (e) {
       throw e;
     }

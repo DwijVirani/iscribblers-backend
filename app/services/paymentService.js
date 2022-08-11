@@ -1,32 +1,47 @@
+const Razorpay = require('razorpay');
+const env = require('./../config/env');
+const projectService = require('./projectService');
+
 class PaymentService {
   async create(userId, projectId) {
     try {
-      const project = await this.getSingle(userId, projectId);
+      const project = await projectService.getSingle(userId, projectId);
       if (!project) throw Error('Project does not exists');
+      else if (project.is_paid) throw Error('Payment is already done');
 
-      const user = await UserService.getUser(userId);
-      if (!user) return;
-
-      console.log('project', project.amount);
-      const idempotencyKey = uuid.v4();
-      const customer = await stripe.customers.create({
-        email: user.email,
-        source: user.id,
+      const instance = new Razorpay({
+        key_id: env.RAZORPAY_KEY_ID,
+        key_secret: env.RAZORPAY_SECRET,
       });
-      console.log(customer);
-      if (customer) {
-        const result = await stripe.charges.create(
-          {
-            amount: project.price * 100,
-            currency: 'inr',
-            customer: customer.id,
-            receipt_email: customer.email,
-            description: `Payment for project: ${project.project_name} is successful`,
-          },
-          { idempotencyKey },
-        );
-        console.log('result', result);
-      }
+
+      const options = {
+        amount: project.amount * 100,
+        currency: 'INR',
+      };
+      const order = await instance.orders.create(options);
+      if (order) return order;
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async updateProject(userId, projectId, payload) {
+    try {
+      const project = await projectService.getSingle(userId, projectId);
+      if (!project) throw Error('Project does not exists');
+      const projectPayload = {
+        payments: {
+          projectId: payload.projectId,
+          paymentId: payload.paymentId,
+          signature: payload.signature,
+        },
+        transaction_id: payload.paymentId,
+        is_paid: true,
+      };
+      const result = await projectService.update(userId, projectId, projectPayload);
+      if (result) return result;
+      return undefined;
     } catch (e) {
       throw e;
     }

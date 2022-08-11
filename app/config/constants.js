@@ -35,4 +35,13 @@ module.exports = {
     EDITING_COMPLETE: 8,
     COMPLETE: 9,
   }),
+  TAX_TYPES: Object.freeze({
+    GROUP: 0,
+    CGST: 1,
+    SGST: 2,
+    IGST: 3,
+  }),
+  TIMEZONE: Object.freeze({
+    IST_TIMEZONE_NAME: 'Asia/Kolkata',
+  }),
 };

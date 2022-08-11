@@ -1,7 +1,7 @@
 const Project = require('../models/project');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
-const { getZonalTime } = require('./../utils/helpers');
+const invoiceService = require('./invoiceService');
 
 const validateProjectInputs = (project) => {
   try {
@@ -41,7 +41,10 @@ class ProjectService extends RepositoryService {
       if (!payload) return;
       if (validateProjectInputs(payload)) {
         const result = await super.create(userId, payload);
-        if (result) return result;
+        if (result) {
+          const invoice = await invoiceService.create(userId, result.id);
+          return result;
+        }
         return undefined;
       }
     } catch (e) {
@@ -101,6 +104,23 @@ class ProjectService extends RepositoryService {
       if (result) {
         const item = await this.getSingle(userId, result.id);
         realtimeService.emitToCompany(userId, 'project-status-updated', item);
+        return item;
+      }
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async update(userId, id, payload) {
+    try {
+      const project = await this.getSingle(userId, id);
+      if (!project) throw Error('Project does not exists');
+
+      const result = await super.update(userId, id, payload);
+      if (result) {
+        const item = await this.getSingle(userId, result.id);
+        realtimeService.emitToCompany(userId, 'project-updated', item);
         return item;
       }
       return undefined;
