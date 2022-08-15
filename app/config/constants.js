@@ -17,6 +17,7 @@ module.exports = {
   USER_TYPE: Object.freeze({
     BUSINESS: 1,
     CREATOR: 2,
+    ADMIN: 3,
   }),
   LANGUAGES: Object.freeze({
     NONE: 0,
