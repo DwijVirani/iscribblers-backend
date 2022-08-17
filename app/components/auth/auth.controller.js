@@ -9,7 +9,7 @@ class AuthController {
   async signIn(req, res) {
     try {
       const { username, password } = req.body;
-      const user = await UserService.validateUserCredential(username, password, USER_ROLE_TYPES.USER);
+      const user = await UserService.validateUserCredential(username, password);
       if (user) {
         createResponse(res, 'ok', 'Login successful', user);
       } else {

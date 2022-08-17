@@ -40,8 +40,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     role: {
-      type: String,
-      enum: ['business', 'creator', 'admin'],
+      type: Number,
       required: false,
     },
     extra1: {
@@ -115,6 +114,7 @@ userSchema.methods = {
       phone: this.phone,
       country_code: this.country_code,
       email: this.email,
+      role: this.role,
       token: `${this.createToken()}`,
       is_new: 0,
     };

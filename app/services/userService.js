@@ -58,16 +58,14 @@ class UserService extends RepositoryService {
     return user;
   }
 
-  async validateUserCredential(username, password, role) {
+  async validateUserCredential(username, password) {
     const normalized_username = String(username).toUpperCase().trim();
     const user = await User.findOne({
       $or: [{ email: username }, { normalized_email: normalized_username }],
     });
     if (!user) return null;
-    if (role === constants.USER_ROLE_TYPES.USER) {
-      if (user && user.role === role && user.authenticateUser(password)) {
+      if (user && user.role === constants.USER_ROLE_TYPES.CREATOR || constants.USER_ROLE_TYPES.BUSINESS && user.authenticateUser(password)) {
         return user.toAuthJSON();
-      }
     }
     return null;
   }
