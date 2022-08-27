@@ -11,6 +11,5 @@ mongoose.Promise = global.Promise;
 
 // If debug run the mongoose debug options
 mongoose.set('debug', process.env.MONGOOSE_DEBUG);
-const connect = (url) =>
-  mongoose.connect(url);
+const connect = (url) => mongoose.connect(url);
 module.exports = connect;

@@ -64,8 +64,11 @@ class UserService extends RepositoryService {
       $or: [{ email: username }, { normalized_email: normalized_username }],
     });
     if (!user) return null;
-      if (user && user.role === constants.USER_ROLE_TYPES.CREATOR || constants.USER_ROLE_TYPES.BUSINESS && user.authenticateUser(password)) {
-        return user.toAuthJSON();
+    if (
+      (user && user.role === constants.USER_ROLE_TYPES.CREATOR) ||
+      (constants.USER_ROLE_TYPES.BUSINESS && user.authenticateUser(password))
+    ) {
+      return user.toAuthJSON();
     }
     return null;
   }

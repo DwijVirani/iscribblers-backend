@@ -1,7 +1,7 @@
 const Razorpay = require('razorpay');
 const env = require('./../config/env');
 const projectService = require('./projectService');
-
+const invoiceService = require('./invoiceService');
 class PaymentService {
   async create(userId, projectId) {
     try {
@@ -40,7 +40,10 @@ class PaymentService {
         is_paid: true,
       };
       const result = await projectService.update(userId, projectId, projectPayload);
-      if (result) return result;
+      if (result) {
+        await invoiceService.create(userId, projectId);
+        return result;
+      }
       return undefined;
     } catch (e) {
       throw e;
