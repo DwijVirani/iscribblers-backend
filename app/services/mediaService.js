@@ -2,9 +2,9 @@ const path = require('path');
 const uuid = require('uuid');
 const Cloud = require('@google-cloud/storage');
 const { GCLOUD_STORAGE_BUCKET } = require('./../config/env');
-const gcServiceKey = require('./../../google.json');
+const gcServiceKey = require('./../../google-credentials.json');
 
-const serviceKeyPath = path.join(__dirname, './../../google.json');
+const serviceKeyPath = path.join(__dirname, './../../google-credentials.json');
 
 class MediaService {
   /**
