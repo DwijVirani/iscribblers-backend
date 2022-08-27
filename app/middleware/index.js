@@ -4,12 +4,14 @@ const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
 const morgan = require('morgan');
+const session = require('express-session');
+const fileUpload = require('express-fileupload');
+const MongoStore = require('connect-mongo');
+const env = require('../config/env');
+
 const i18n = require('./i18n');
 const passportJwtUtils = require('./passportJwtUtils');
 const passportOAuth = require('./passportOAuth');
-const session = require('express-session');
-const env = require('../config/env');
-const fileUpload = require('express-fileupload');
 
 class Middlewares {
   init(app) {
@@ -30,7 +32,14 @@ class Middlewares {
     /**
      * Passport middleware init
      */
-    app.use(session({ secret: env.EXPRESS_SECRET, resave: false, saveUninitialized: true }));
+    app.use(
+      session({
+        saveUninitialized: false,
+        resave: false,
+        store: MongoStore.create({ mongoUrl: env.DB_CONNECTION_STRING }),
+        secret: env.EXPRESS_SECRET,
+      }),
+    );
     app.use(passport.initialize());
     app.use(passport.session());
     /**

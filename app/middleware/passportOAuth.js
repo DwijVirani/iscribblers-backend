@@ -1,5 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const userService = require('./../services/userService');
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 module.exports = (passport) => {

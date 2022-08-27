@@ -1,13 +1,15 @@
+const moment = require('moment');
 const Invoice = require('../models/invoice');
 const Tax = require('../models/tax');
 const RepositoryService = require('./repositoryService');
 const { TAX_TYPES, TIMEZONE } = require('./../config/constants');
 const { getNextNumber, getZonalTime } = require('./../utils/helpers');
-const moment = require('moment');
+
 class InvoiceService extends RepositoryService {
   constructor() {
     super(Invoice);
   }
+
   async isInvoiceNumberExist(userId, companyId, type, invoice_no, id) {
     try {
       let query = { cid: companyId, type, number: invoice_no };

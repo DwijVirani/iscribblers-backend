@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
+const moment = require('moment');
+const { isNull } = require('lodash');
+const { groupBy, mathRounding } = require('../utils/helpers');
 const project = require('./project');
 const tax = require('./tax');
+const { TAX_TYPES } = require('./../config/constants');
+
 const Schema = mongoose.Schema;
 
 const invoiceSchema = new mongoose.Schema(
@@ -214,7 +219,7 @@ invoiceSchema.methods = {
     });
 
     return {
-      company: company_details,
+      // company: company_details,
       invoice: {
         ...invoice,
         amount_in_word: toWords.convert(invoice.total_amount),

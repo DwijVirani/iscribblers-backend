@@ -42,7 +42,7 @@ class ProjectService extends RepositoryService {
       if (validateProjectInputs(payload)) {
         const result = await super.create(userId, payload);
         if (result) {
-          const invoice = await invoiceService.create(userId, result.id);
+          await invoiceService.create(userId, result.id);
           return result;
         }
         return undefined;
@@ -83,7 +83,7 @@ class ProjectService extends RepositoryService {
       const item = await this.getSingle(userId, id);
       if (!item) throw Error('Project does not exists');
 
-      const result = await Project.delete({ _id: id });
+      await Project.delete({ _id: id });
       return true;
     } catch (e) {
       throw e;
@@ -136,7 +136,7 @@ class ProjectService extends RepositoryService {
 
       const projects = await Project.find({ status_update_time: { $gte: new Date(date).toISOString() } });
       if (projects && projects.length > 0) {
-        const projectIds = project.map((x) => x._id);
+        // const projectIds = projects.map((x) => x._id);
       }
     } catch (e) {
       throw e;
