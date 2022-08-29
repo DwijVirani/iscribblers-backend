@@ -1,6 +1,6 @@
-const { createResponse, createError } = require('./../../utils/helpers');
 const UserService = require('../../services/userService');
 const { USER_ROLE_TYPES } = require('../../config/constants');
+const { createResponse, createError } = require('./../../utils/helpers');
 
 class AuthController {
   /**

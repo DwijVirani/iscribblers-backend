@@ -94,8 +94,40 @@ class InvoiceService extends RepositoryService {
         createdBy: userId,
         updatedBy: userId,
       };
-      console.log('invoicePayload', invoicePayload);
       await super.create(userId, invoicePayload);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async get(userId) {
+    try {
+      if (!userId) return;
+      const result = await Invoice.find({ createdBy: userId });
+      if (result) {
+        return result.map((x) => {
+          return x.toJSONWithObject();
+        });
+      }
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getPreview(userId, id) {
+    try {
+      if (!id) return;
+
+      const result = await this.collection.findOneWithDeleted({ _id: id }).populate([
+        { path: 'items.project' },
+        { path: 'items.tax', populate: [{ path: 'group_taxes' }] },
+        // { path: 'payments.created_by' },
+        { path: 'createdBy' },
+        { path: 'updatedBy' },
+      ]);
+      if (result) return result.toPreview();
+      return undefined;
     } catch (e) {
       throw e;
     }

@@ -9,6 +9,7 @@ class UserService extends RepositoryService {
   constructor() {
     super(User);
   }
+
   /**
    * @description Get User
    */
@@ -109,7 +110,6 @@ class UserService extends RepositoryService {
               ...body,
               extra1: body.password,
               normalized_email: String(body.email).toUpperCase(),
-              role,
             });
 
             user.save((err2, item) => {
@@ -224,6 +224,7 @@ class UserService extends RepositoryService {
       if (!user) throw Error('User not exit');
 
       const result = await super.update(user_id, '', user_id, payload);
+      return result.toJSON();
     } catch (err) {
       throw err;
     }

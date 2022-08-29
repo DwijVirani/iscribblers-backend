@@ -219,7 +219,9 @@ invoiceSchema.methods = {
     });
 
     return {
-      // company: company_details,
+      company: {
+        logo_url: '',
+      },
       invoice: {
         ...invoice,
         amount_in_word: toWords.convert(invoice.total_amount),
