@@ -67,7 +67,34 @@ class ProjectController {
       if (item) return createResponse(res, 'ok', 'Project status updated successfully', item);
       else return createError(res, { message: 'Unable to update status' });
     } catch (e) {
-      throw e;
+      return createError(res, e);
+    }
+  }
+
+  async assignProjectToCreator(req, res) {
+    try {
+      const { user } = req;
+      const { id } = req.params;
+      const { creator } = req.body;
+
+      const item = await ProjectService.assignProjectToCreator(user.id, id, creator);
+      if (item) return createResponse(res, 'ok', 'Project assigned successfully', item);
+      else return createError(res, { message: 'Unable to assign project' });
+    } catch (e) {
+      return createError(res, e);
+    }
+  }
+
+  async acceptProject(req, res) {
+    try {
+      const { user } = req;
+      const { id } = req.params;
+
+      const item = await ProjectService.acceptProject(user.id, id);
+      if (item) return createResponse(res, 'ok', 'Project accepted successfully', item);
+      else return createError(res, { message: 'Unable to accept project' });
+    } catch (e) {
+      return createError(res, e);
     }
   }
 }

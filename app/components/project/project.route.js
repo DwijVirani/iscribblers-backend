@@ -109,4 +109,39 @@ router.put(
   },
 );
 
+/**
+ * @route PUT api/project/assign/:id
+ * @description create
+ * @returns JSON
+ * @access public
+ */
+router.put(
+  '/assign/:id',
+  [
+    passport.authenticate('jwt', { session: false, failWithError: true }),
+    PassportErrorHandler.success,
+    PassportErrorHandler.error,
+  ],
+  (req, res) => {
+    controller.assignProjectToCreator(req, res);
+  },
+);
+
+/**
+ * @route PUT api/project/accept/:id
+ * @description create
+ * @returns JSON
+ * @access public
+ */
+router.put(
+  '/accept/:id',
+  [
+    passport.authenticate('jwt', { session: false, failWithError: true }),
+    PassportErrorHandler.success,
+    PassportErrorHandler.error,
+  ],
+  (req, res) => {
+    controller.acceptProject(req, res);
+  },
+);
 module.exports = router;

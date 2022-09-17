@@ -29,7 +29,7 @@ class RepositoryService {
     try {
       if (!id) return;
 
-      const result = await this.collection.find({ _id: id });
+      const result = await this.collection.findOne({ _id: id });
       if (result) return result.toJSON();
       return undefined;
     } catch (e) {

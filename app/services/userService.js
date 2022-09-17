@@ -78,7 +78,7 @@ class UserService extends RepositoryService {
    * @description Add new User
    * @param {Object} obj
    */
-  addNewUser(obj, role) {
+  addNewUser(obj) {
     return new Promise(async (resolve, reject) => {
       try {
         const body = { ...obj };

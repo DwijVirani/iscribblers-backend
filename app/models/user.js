@@ -61,6 +61,55 @@ const userSchema = new mongoose.Schema(
     ip: {
       type: String,
     },
+    exp_indsutry: {
+      type: String,
+    },
+    content_type_exp: [
+      {
+        type: String,
+      },
+    ],
+    resume: [
+      {
+        name: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
+    ],
+    linkedin_url: {
+      type: String,
+    },
+    work_samples: [
+      {
+        name: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
+      },
+    ],
+    author_bio_articles: {
+      type: Boolean,
+    },
+    live_sample: {
+      type: String,
+    },
+    refferal_site: {
+      type: String,
+    },
+    years_of_exp: {
+      type: Number,
+    },
+    expected_pay_per_word: {
+      type: String,
+    },
+    current_job_type: {
+      type: String,
+    },
   },
   { timestamps: true, usePushEach: true }, // UTC format
 );

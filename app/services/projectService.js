@@ -1,7 +1,9 @@
 const Project = require('../models/project');
+const { USER_TYPE } = require('../config/constants');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
 const invoiceService = require('./invoiceService');
+const userService = require('./userService');
 
 const validateProjectInputs = (project) => {
   try {
@@ -58,6 +60,18 @@ class ProjectService extends RepositoryService {
 
       const result = await Project.findOne({ createdBy: userId, _id: id });
       if (result) return result;
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getSingleForCreatorAssign(id) {
+    try {
+      if (!id) return;
+
+      const result = await Project.findOne({ _id: id }).populate([{ path: 'assigned_to' }]);
+      if (result) return result.toJSON();
       return undefined;
     } catch (e) {
       throw e;
@@ -134,10 +148,62 @@ class ProjectService extends RepositoryService {
       const date = new Date().getTime() + 21600000;
       console.log(new Date(date).toISOString());
 
-      const projects = await Project.find({ status_update_time: { $gte: new Date(date).toISOString() } });
+      const projects = await Project.find({
+        status_update_time: { $gte: new Date(date).toISOString() },
+        is_accepted_by_creator: true,
+      });
       if (projects && projects.length > 0) {
         // const projectIds = projects.map((x) => x._id);
       }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async assignProjectToCreator(userId, projectId, creatorId) {
+    try {
+      const user = await userService.getSingle(userId);
+      const creator = await userService.getSingle(creatorId);
+      if (!user) throw Error('User not found');
+      else if (!creator) throw Error('Creator not found');
+
+      if (user.role !== USER_TYPE.ADMIN) throw Error('You do not permission for this action');
+      else if (creator.role !== USER_TYPE.CREATOR) throw Error('Cannot assign to this user');
+
+      const existingItem = await this.getSingleForCreatorAssign(projectId);
+      if (!existingItem) throw Error('Project does not exists');
+
+      const payload = {
+        assigned_to: creatorId,
+      };
+      const result = await super.update(userId, projectId, payload);
+      if (result) {
+        const item = await this.getSingleForCreatorAssign(result.id);
+        return item;
+      }
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async acceptProject(userId, projectId) {
+    try {
+      const user = await userService.getSingle(userId);
+      if (!user) throw Error('User not found');
+      if (user.role !== USER_TYPE.CREATOR) throw Error('Only creators can accept project');
+
+      const existingItem = await this.getSingleForCreatorAssign(projectId);
+      if (!existingItem) throw Error('Project does not exists');
+
+      const payload = {
+        is_accepted_by_creator: true,
+      };
+      const result = await super.update(userId, projectId, payload);
+      if (result) {
+        return result;
+      }
+      return undefined;
     } catch (e) {
       throw e;
     }

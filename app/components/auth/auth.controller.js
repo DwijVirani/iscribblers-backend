@@ -1,5 +1,4 @@
 const UserService = require('../../services/userService');
-const { USER_ROLE_TYPES } = require('../../config/constants');
 const { createResponse, createError } = require('./../../utils/helpers');
 
 class AuthController {
@@ -25,7 +24,7 @@ class AuthController {
    */
   async signUp(req, res) {
     try {
-      const user = await UserService.addNewUser(req.body, USER_ROLE_TYPES.USER);
+      const user = await UserService.addNewUser(req.body);
       if (user) {
         createResponse(res, 'ok', 'Signup successful', user);
       } else {

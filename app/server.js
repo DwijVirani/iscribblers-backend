@@ -8,13 +8,14 @@ const socketio = require('socket.io');
 // Init Router
 const favicon = require('express-favicon');
 const chalk = require('chalk');
+const schedule = require('node-schedule');
 const middlewares = require('./middleware');
 const routes = require('./routes');
 const env = require('./config/env');
 const connect = require('./config/database');
 const realTimeService = require('./services/realtimeService');
-const schedule = require('node-schedule');
 const projectService = require('./services/projectService');
+
 const io = socketio(server, {
   cors: {
     origin: '*',

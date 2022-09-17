@@ -203,6 +203,14 @@ const projectSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    assigned_to: {
+      type: Schema.Types.ObjectId,
+      ref: User,
+    },
+    is_accepted_by_creator: {
+      type: Boolean,
+      default: false,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User,
@@ -291,6 +299,8 @@ projectSchema.methods = {
       gst_number: this.gst_number,
       amount: this.amount,
       transaction_id: this.transaction_id,
+      assigned_to: this.assigned_to ? this.assigned_to.toJSON() : {},
+      is_accepted_by_creator: this.is_accepted_by_creator,
       createdBy: this.createdBy,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

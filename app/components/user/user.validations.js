@@ -34,10 +34,10 @@ class UserValidator {
    */
   updateProfile(req, res, next) {
     const errors = {};
-    const { name } = req.body;
+    const { first_name } = req.body;
 
-    if (isEmpty(name)) {
-      errors.name = 'Name is required';
+    if (isEmpty(first_name)) {
+      errors.first_name = 'First Name is required';
     }
 
     if (Object.keys(errors).length > 0) {
