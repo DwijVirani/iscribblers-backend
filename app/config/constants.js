@@ -31,10 +31,12 @@ module.exports = {
     OUTLINE_CREATION: 3,
     PENDING_APPROVAL: 4,
     WRITING_IN_PROGRESS: 5,
-    REVIEW_NEEDED: 6,
+    REWORK_NEEDED: 6,
     EDITING_IN_PROGRESS: 7,
     EDITING_COMPLETE: 8,
     COMPLETE: 9,
+    INCOMPLETE: 10,
+    NEW: 11,
   }),
   TAX_TYPES: Object.freeze({
     GROUP: 0,

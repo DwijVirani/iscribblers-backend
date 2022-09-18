@@ -1,40 +1,83 @@
 const mongoose = require('mongoose');
-const { USER_ROLE_TYPES } = require('../config/constants');
+const { USER_TYPE, PROJECT_STATUS } = require('../config/constants');
 const Project = require('./../models/project');
 const userService = require('./userService');
 
 class DashboardService {
   async widgets(userId) {
     try {
-      console.log('user', userId);
-      const user = await userService.get(userId);
+      const user = await userService.getUser(userId);
+
       let query = {
-        $or: [
-          { createdBy: mongoose.Types.ObjectId('62deb4543ed020ac8e7862dc') },
-          { assigned_to: mongoose.Types.ObjectId(userId) },
-        ],
+        $or: [{ createdBy: mongoose.Types.ObjectId(userId) }, { assigned_to: mongoose.Types.ObjectId(userId) }],
       };
 
-      if (user.role === USER_ROLE_TYPES.ADMIN) query = {};
+      if (user.role === USER_TYPE.ADMIN) query = {};
       const projectCounts = await Project.aggregate([
-        { $match: query },
+        { $match: { ...query } },
         {
           $group: {
-            _id: '$status',
+            _id: { status: '$status', accepted: '$is_accepted_by_creator' },
             count: { $sum: 1 },
           },
         },
         {
           $project: {
-            status: '$_id',
+            status: '$_id.status',
+            accepted: '$_id.accepted',
             count: '$count',
             _id: 0,
           },
         },
       ]);
+      console.log('projectCounts', projectCounts);
+      const allProjects = await Project.find({});
+      const totalRevenue = allProjects.reduce((sum, x) => sum + x.amount, 0);
 
-      console.log('project', projectCounts);
-      return projectCounts;
+      let result = [];
+      if (user.role === USER_TYPE.BUSINESS) {
+        const filteredResult = projectCounts.filter((x) => x.status !== PROJECT_STATUS.REVIEW_NEEDED);
+        result = { items: filteredResult, totalCount: filteredResult.reduce((sum, x) => sum + x.count, 0) };
+      } else if (user.role === USER_TYPE.CREATOR) {
+        const newAssignments = projectCounts.filter((x) => x.status !== PROJECT_STATUS.COMPLETE && !x.accepted);
+        const incomplete = projectCounts.filter((x) => x.status !== PROJECT_STATUS.COMPLETE);
+        const rework = projectCounts.filter((x) => x.status !== PROJECT_STATUS.REWORK_NEEDED);
+        return {
+          items: [
+            {
+              status: PROJECT_STATUS.NEW,
+              count: newAssignments.reduce((sum, x) => sum + x.count, 0),
+            },
+            {
+              status: PROJECT_STATUS.INCOMPLETE,
+              count: incomplete.reduce((sum, x) => sum + x.count, 0),
+            },
+            {
+              status: PROJECT_STATUS.REWORK_NEEDED,
+              count: rework.reduce((sum, x) => sum + x.count, 0),
+            },
+          ],
+          totalCount: projectCounts.reduce((sum, x) => sum + x.count, 0),
+        };
+      } else if (user.role === USER_TYPE.ADMIN) {
+        const completed = projectCounts.filter((x) => x.status === PROJECT_STATUS.COMPLETE);
+        const incomplete = projectCounts.filter((x) => x.status !== PROJECT_STATUS.COMPLETE);
+        return {
+          items: [
+            {
+              status: PROJECT_STATUS.COMPLETE,
+              count: completed.reduce((sum, x) => sum + x.count, 0),
+            },
+            {
+              status: PROJECT_STATUS.INCOMPLETE,
+              count: incomplete.reduce((sum, x) => sum + x.count, 0),
+            },
+          ],
+          totalCount: projectCounts.reduce((sum, x) => sum + x.count, 0),
+          totalRevenue,
+        };
+      }
+      return result;
     } catch (e) {
       throw e;
     }
