@@ -223,8 +223,8 @@ class UserService extends RepositoryService {
       });
       if (!user) throw Error('User not exit');
 
-      const result = await super.update(user_id, '', user_id, payload);
-      return result.toJSON();
+      const result = await super.update(user_id, user_id, payload);
+      return result;
     } catch (err) {
       throw err;
     }

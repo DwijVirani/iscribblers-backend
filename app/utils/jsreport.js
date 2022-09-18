@@ -15,13 +15,10 @@ require.extensions['.html'] = function (module, filename) {
 async function getPDF(template = 'basic-invoice.html', data) {
   try {
     const template_path = path.join(__dirname, '..', 'static-contents', 'invoice-template', template);
-    console.log('template_path', template_path);
     // eslint-disable-next-line import/no-dynamic-require
     const htmlText = require(template_path);
-    console.log('htmlText', htmlText);
 
     const client = require('jsreport-client')(JS_REPORT_URL, JS_REPORT_USERNAME, JS_REPORT_PASSWORD);
-    console.log('client', client);
 
     const res = await client.render({
       template: {
@@ -34,7 +31,6 @@ async function getPDF(template = 'basic-invoice.html', data) {
     console.log('res', res);
 
     const bodyBuffer = await res.body();
-    // console.log(bodyBuffer.toString());
     return bodyBuffer;
   } catch (e) {
     console.log('ERROR', e);
