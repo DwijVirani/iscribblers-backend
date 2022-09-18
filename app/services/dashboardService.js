@@ -30,7 +30,6 @@ class DashboardService {
           },
         },
       ]);
-      console.log('projectCounts', projectCounts);
       const allProjects = await Project.find({});
       const totalRevenue = allProjects.reduce((sum, x) => sum + x.amount, 0);
 
