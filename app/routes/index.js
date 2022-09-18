@@ -5,6 +5,7 @@ const userRoutes = require('../components/user/user.route');
 const paymentRoutes = require('../components/payment/payment.route');
 const invoiceRoutes = require('../components/invoice/invoice.route');
 const TaxRoutes = require('../components/tax/tax.route');
+const dashboardRoutes = require('./../components/dashboard/dashboard.route');
 
 module.exports = (app) => {
   app.use('/api/auth', authRoutes);
@@ -14,4 +15,5 @@ module.exports = (app) => {
   app.use('/api/payment', paymentRoutes);
   app.use('/api/invoice', invoiceRoutes);
   app.use('/api/tax', TaxRoutes);
+  app.use('/api/dashboard', dashboardRoutes);
 };
