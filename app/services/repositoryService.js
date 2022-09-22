@@ -67,7 +67,7 @@ class RepositoryService {
         updatedBy: userId,
       };
 
-      const result = await this.collection.findOneAndUpdate({ _id: id }, itemPayload, { new: false });
+      const result = await this.collection.findOneAndUpdate({ _id: id }, itemPayload, { new: true });
       if (result) return result.toJSON();
       return undefined;
     } catch (e) {
