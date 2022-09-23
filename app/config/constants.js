@@ -47,4 +47,19 @@ module.exports = {
   TIMEZONE: Object.freeze({
     IST_TIMEZONE_NAME: 'Asia/Kolkata',
   }),
+
+  PROJECT_STATUS_NAMES: Object.freeze({
+    0: 'NONE',
+    1: 'Draft',
+    2: 'Pending Allocation',
+    3: 'Outline Creation',
+    4: 'Pendgin Approval',
+    5: 'Writing in Progress',
+    6: 'Rework Needed',
+    7: 'Editing in Progress',
+    8: 'Editing Complete',
+    9: 'Completed',
+    10: 'Incomplete',
+    11: 'New',
+  }),
 };

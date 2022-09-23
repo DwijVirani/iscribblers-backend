@@ -288,7 +288,7 @@
                         {{/if}} {{if invoice.number}}
                         <li><span>Number:</span>{{:invoice.number}}</li>
                         {{/if}} {{if invoice.sales_person}}
-                        <li><span> Sales Person: </span>{{:invoice.sales_person.company_name}}</li>
+                        <!-- <li><span> Sales Person: </span>{{:invoice.sales_person.company_name}}</li> -->
                         {{/if}}
                       </ul>
                     </td>
@@ -331,7 +331,7 @@
                                 line-height: 12px;
                               "
                             >
-                              {{:invoice.contact.company_name}}
+                              <!-- {{:invoice.contact.company_name}} -->
                             </p>
                             <p style="margin: 0; color: #000000; padding-bottom: 4px; line-height: 1.3">
                               {{:invoice.billing_address.addressLine1}} {{:invoice.billing_address.addressLine2}}
@@ -385,7 +385,7 @@
                                 line-height: 12px;
                               "
                             >
-                              {{:invoice.contact.company_name}}
+                              <!-- {{:invoice.contact.company_name}} -->
                             </p>
                             <p style="margin: 0; color: #000000; padding-bottom: 4px; line-height: 1.3">
                               {{:invoice.shipping_address.addressLine1}} {{:invoice.shipping_address.addressLine2}}

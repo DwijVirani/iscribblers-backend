@@ -1,9 +1,10 @@
 const Project = require('../models/project');
-const { USER_TYPE } = require('../config/constants');
+const { USER_TYPE, PROJECT_STATUS_NAMES } = require('../config/constants');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
 const invoiceService = require('./invoiceService');
 const userService = require('./userService');
+const notificationsService = require('./notificationsService');
 
 const validateProjectInputs = (project) => {
   try {
@@ -117,6 +118,20 @@ class ProjectService extends RepositoryService {
       const result = await Project.findOneAndUpdate({ _id: id }, projectPayload);
       if (result) {
         const item = await this.getSingle(userId, result.id);
+        const notification = await notificationsService.getByProjectId(item.id);
+
+        let isUpdateRequired = true;
+        if (notification && Number(notification.status) === Number(payload)) isUpdateRequired = false;
+
+        const statusName = PROJECT_STATUS_NAMES[Number(payload)];
+        const notificationPayload = {
+          user: project.createdBy,
+          message: `Project status updated to ${statusName}`,
+          project: item.id,
+          status: payload,
+        };
+
+        if (isUpdateRequired) await notificationsService.create(notificationPayload);
         realtimeService.emitToCompany(userId, 'project-status-updated', item);
         return item;
       }
