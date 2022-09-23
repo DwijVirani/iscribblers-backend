@@ -25,7 +25,7 @@ class NotificationsService extends RepositoryService {
     }
   }
 
-  async getSingle(id) {
+  async getSingle(userId, id) {
     try {
       if (!id) return;
 
