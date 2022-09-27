@@ -152,10 +152,10 @@ const projectSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    registered_company_name: {
-      type: String,
-      required: true,
-    },
+    // registered_company_name: {
+    //   type: String,
+    //   required: true,
+    // },
     company_address: {
       type: String,
       required: true,
@@ -211,6 +211,10 @@ const projectSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    company_phone: {
+      type: String,
+      required: false,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User,
@@ -242,6 +246,7 @@ projectSchema.methods = {
       target_audience: this.target_audience,
       project_purpose: this.project_purpose,
       status: this.status,
+      status_update_time: this.status_update_time,
       content_title: this.content_title,
       content_purpose: this.content_purpose,
       word_count: this.word_count,
@@ -290,8 +295,9 @@ projectSchema.methods = {
       company_name: this.company_name,
       company_primary_industry: this.company_primary_industry,
       company_bio: this.company_bio,
+      company_phone: this.company_phone,
       writer: this.writer,
-      registered_company_name: this.registered_company_name,
+      // registered_company_name: this.registered_company_name,
       company_address: this.company_address,
       country: this.country,
       zip_code: this.zip_code,

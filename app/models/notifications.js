@@ -51,6 +51,8 @@ notificationsSchema.methods = {
       id: this._id,
       user: this.user ? this.user.toJSON() : {},
       message: this.message,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     };
   },
 };

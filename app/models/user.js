@@ -110,6 +110,15 @@ const userSchema = new mongoose.Schema(
     current_job_type: {
       type: String,
     },
+    creator_accepted: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    creator_accepted_date: {
+      type: Date,
+      required: false,
+    },
   },
   { timestamps: true, usePushEach: true }, // UTC format
 );
@@ -165,7 +174,7 @@ userSchema.methods = {
       email: this.email,
       role: this.role,
       token: `${this.createToken()}`,
-      is_new: 0,
+      is_new: this.is_new,
     };
   },
 
@@ -179,6 +188,19 @@ userSchema.methods = {
       email: this.email,
       avatar: this.avatar,
       role: this.role,
+      exp_indsutry: this.exp_indsutry,
+      content_type_exp: this.content_type_exp,
+      resume: this.resume,
+      linkedin_url: this.linkedin_url,
+      work_samples: this.work_samples,
+      author_bio_articles: this.author_bio_articles,
+      live_sample: this.live_sample,
+      refferal_site: this.refferal_site,
+      years_of_exp: this.years_of_exp,
+      expected_pay_per_word: this.expected_pay_per_word,
+      current_job_type: this.current_job_type,
+      creator_accepted: this.creator_accepted,
+      creator_accepted_date: this.creator_accepted_date,
       is_new: 0,
     };
   },

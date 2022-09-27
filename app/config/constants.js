@@ -62,4 +62,10 @@ module.exports = {
     10: 'Incomplete',
     11: 'New',
   }),
+
+  WRITER_TYPE: Object.freeze({
+    GENERALIST: 1,
+    ADVANCED: 2,
+    SUBJECT_MATTER_EXPERT: 3,
+  }),
 };

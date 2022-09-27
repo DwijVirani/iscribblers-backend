@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { USER_TYPE, PROJECT_STATUS } = require('../config/constants');
+const User = require('../models/user');
 const Project = require('./../models/project');
 const userService = require('./userService');
 
@@ -77,6 +78,70 @@ class DashboardService {
         };
       }
       return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async getCreatorList(userId) {
+    try {
+      if (!userId) return;
+      const user = await userService.getSingle(userId);
+      if (user.role !== USER_TYPE.ADMIN) return [];
+
+      const result = await User.find({ role: USER_TYPE.CREATOR });
+      if (result) {
+        return result.map((x) => {
+          return x.toJSON();
+        });
+      }
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async acceptCreator(userId, creatorId) {
+    try {
+      if (!userId || !creatorId) return;
+      const user = await userService.getSingle(userId);
+      if (user.role !== USER_TYPE.ADMIN) throw Error('You cannot perform this action');
+
+      const creator = await userService.getSingle(userId);
+      if (!creator) throw Error('Creator does not exists');
+      else if (creator.role !== USER_TYPE.CREATOR) throw Error('Only creators can be accepted');
+
+      const payload = {
+        creator_accepted: true,
+        creator_accepted_date: new Date().toISOString(),
+      };
+
+      const result = await User.findByIdAndUpdate({ _id: creatorId }, { $set: payload });
+      if (result) return result.toJSON();
+      return undefined;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async rejectCreator(userId, creatorId) {
+    try {
+      if (!userId || !creatorId) return;
+      const user = await userService.getSingle(userId);
+      if (user.role !== USER_TYPE.ADMIN) throw Error('You cannot perform this action');
+
+      const creator = await userService.getSingle(userId);
+      if (!creator) throw Error('Creator does not exists');
+      else if (creator.role !== USER_TYPE.CREATOR) throw Error('Only creators can be accepted');
+
+      const payload = {
+        creator_accepted: false,
+        creator_accepted_date: new Date().toISOString(),
+      };
+
+      const result = await User.findByIdAndUpdate({ _id: creatorId }, { $set: payload });
+      if (result) return result.toJSON();
+      return undefined;
     } catch (e) {
       throw e;
     }

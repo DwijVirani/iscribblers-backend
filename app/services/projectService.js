@@ -2,7 +2,7 @@ const Project = require('../models/project');
 const { USER_TYPE, PROJECT_STATUS_NAMES } = require('../config/constants');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
-const invoiceService = require('./invoiceService');
+// const invoiceService = require('./invoiceService');
 const userService = require('./userService');
 const notificationsService = require('./notificationsService');
 
@@ -45,7 +45,14 @@ class ProjectService extends RepositoryService {
       if (validateProjectInputs(payload)) {
         const result = await super.create(userId, payload);
         if (result) {
-          await invoiceService.create(userId, result.id);
+          const notificationPayload = {
+            user: result.createdBy,
+            message: `Project Created`,
+            project: result.id,
+            status: payload,
+          };
+          await notificationsService.create(notificationPayload);
+          // await invoiceService.create(userId, result.id);
           return result;
         }
         return undefined;
@@ -160,15 +167,22 @@ class ProjectService extends RepositoryService {
 
   async autoUpdateStatus() {
     try {
-      const date = new Date().getTime() + 21600000;
-      console.log(new Date(date).toISOString());
+      const date = new Date().getTime() - 21600000;
 
       const projects = await Project.find({
-        status_update_time: { $gte: new Date(date).toISOString() },
-        is_accepted_by_creator: true,
+        status_update_time: { $lte: new Date(date).toISOString() },
+        assigned_to: { $exists: true },
       });
       if (projects && projects.length > 0) {
-        // const projectIds = projects.map((x) => x._id);
+        const notAccepted = projects.filter((project) => project.is_accepted_by_creator === false);
+        if (notAccepted.length > 0) {
+          const payload = {
+            assigned_to: null,
+          };
+          const projectIds = notAccepted.map((project) => project._id);
+
+          await Project.updateMany({ _id: { $in: projectIds } }, { $set: { payload } });
+        }
       }
     } catch (e) {
       throw e;
@@ -190,6 +204,7 @@ class ProjectService extends RepositoryService {
 
       const payload = {
         assigned_to: creatorId,
+        status_update_time: new Date(),
       };
       const result = await super.update(userId, projectId, payload);
       if (result) {
