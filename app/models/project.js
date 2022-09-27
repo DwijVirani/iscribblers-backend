@@ -304,6 +304,7 @@ projectSchema.methods = {
               };
             })
           : [],
+      project_link: this.project_link,
       company_name: this.company_name,
       company_primary_industry: this.company_primary_industry,
       company_bio: this.company_bio,
