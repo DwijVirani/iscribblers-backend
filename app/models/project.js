@@ -152,6 +152,18 @@ const projectSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    project_link: [
+      {
+        url: {
+          type: String,
+          trim: true,
+        },
+        name: {
+          type: String,
+          trim: true,
+        },
+      },
+    ],
     // registered_company_name: {
     //   type: String,
     //   required: true,
