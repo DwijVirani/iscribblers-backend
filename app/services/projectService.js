@@ -1,5 +1,5 @@
 const Project = require('../models/project');
-const { USER_TYPE, PROJECT_STATUS_NAMES } = require('../config/constants');
+const { USER_TYPE, PROJECT_STATUS_NAMES, PROJECT_STATUS } = require('../config/constants');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
 // const invoiceService = require('./invoiceService');
@@ -49,7 +49,7 @@ class ProjectService extends RepositoryService {
             user: result.createdBy,
             message: `Project Created`,
             project: result.id,
-            status: payload,
+            status: PROJECT_STATUS.DRAFT,
           };
           await notificationsService.create(notificationPayload);
           // await invoiceService.create(userId, result.id);
