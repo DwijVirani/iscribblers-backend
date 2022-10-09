@@ -7,8 +7,8 @@ class InvoiceController {
     try {
       const { user } = req;
       const result = await invoiceService.get(user.id);
-      if (result) createResponse(res, 'ok', 'Invoice Listed successfully', result);
-      else createError(res, {}, { message: 'Unable to get invocies' });
+      if (result) return createResponse(res, 'ok', 'Invoice Listed successfully', result);
+      else return createError(res, {}, { message: 'Unable to get invocies' });
     } catch (e) {
       createError(res, e);
     }
@@ -18,24 +18,27 @@ class InvoiceController {
     try {
       const { user } = req;
       const { id } = req.params;
-      const { download } = req.query;
-      let { copies } = req.query;
-      if (!copies) copies = 1;
+      const download = true;
       const invoicePreviewData = await invoiceService.getPreview(user ? user.id : '', id);
-      // console.log('invoicePreviewData', invoicePreviewData);
+
       if (invoicePreviewData && invoicePreviewData.invoice) {
         const pdfData = await getPdf('basic-invoice.html', invoicePreviewData);
         const slugify = require('slugify');
         const invoice_file_name = slugify(`Invoice-${invoicePreviewData.invoice.number}`, { strict: true });
-        res.writeHead(200, {
-          'Content-Disposition': `${
+        console.log('invoice_file_name', invoice_file_name);
+        console.log(
+          '/*/*/',
+          `'Content-Disposition': ${
             download && (download === true || download === 'true') ? 'attachment;' : ''
           } filename="${invoice_file_name}.pdf"`,
+        );
+        res.writeHead(200, {
+          'Content-Disposition': `attachment; filename="${invoice_file_name}.pdf"`,
           'Content-Type': 'application/pdf',
           'Content-Length': pdfData.length,
         });
 
-        return res.end(invoicePreviewData);
+        return res.end(pdfData, 'binary');
       } else return createError(res, { message: 'Invoice item not found' });
     } catch (e) {
       return createError(res, e);

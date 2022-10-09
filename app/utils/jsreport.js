@@ -23,12 +23,11 @@ async function getPDF(template = 'basic-invoice.html', data) {
     const res = await client.render({
       template: {
         content: htmlText,
-        recipe: 'phantom-pdf',
+        recipe: 'chrome-pdf',
         engine: 'jsrender',
       },
       data,
     });
-    console.log('res', res);
 
     const bodyBuffer = await res.body();
     return bodyBuffer;

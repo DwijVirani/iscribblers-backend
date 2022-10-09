@@ -5,7 +5,7 @@ const { isNull } = require('lodash');
 const { groupBy, mathRounding } = require('../utils/helpers');
 const project = require('./project');
 const tax = require('./tax');
-const { TAX_TYPES } = require('./../config/constants');
+const { TAX_TYPES, COMPANY_DETAILS } = require('./../config/constants');
 
 const Schema = mongoose.Schema;
 
@@ -220,7 +220,15 @@ invoiceSchema.methods = {
 
     return {
       company: {
-        logo_url: '',
+        logo_url: COMPANY_DETAILS.LOGO,
+        email: COMPANY_DETAILS.EMAIL,
+        name: COMPANY_DETAILS.NAME,
+        address_line1: COMPANY_DETAILS.ADD_LINE_1,
+        address_line2: COMPANY_DETAILS.ADD_LINE_2,
+        city: COMPANY_DETAILS.CITY,
+        state: COMPANY_DETAILS.STATE,
+        pincode: COMPANY_DETAILS.ZIPCODE,
+        gst_number: COMPANY_DETAILS.GST_NO,
       },
       invoice: {
         ...invoice,

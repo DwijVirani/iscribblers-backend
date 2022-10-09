@@ -68,4 +68,17 @@ module.exports = {
     ADVANCED: 2,
     SUBJECT_MATTER_EXPERT: 3,
   }),
+
+  COMPANY_DETAILS: Object.freeze({
+    NAME: 'iScribblers',
+    // eslint-disable-next-line max-len
+    LOGO: `https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.logodesign.net%2Flogo-new%2Ftext-in-vintage-banner-9393ld.png%3Fsize%3D1%26industry%3Dtext&imgrefurl=https%3A%2F%2Fwww.logodesign.net%2Flogos%2Ftext&tbnid=BK4X0os_tGotKM&vet=12ahUKEwiD9KmO7dP6AhUd9XMBHZY6BI8QMygIegUIARDMAQ..i&docid=YdMXIUZpnK2tNM&w=272&h=185&q=company%20text%20logo&ved=2ahUKEwiD9KmO7dP6AhUd9XMBHZY6BI8QMygIegUIARDMAQ`,
+    GST_NO: '22AAAAA0000A1Z5',
+    ADD_LINE_1: '349 Quitzon Corners',
+    ADD_LINE_2: '',
+    CITY: 'Port Noe',
+    STATE: 'UTAH',
+    ZIPCODE: '98430',
+    EMAIL: 'iscribbler@gmail.com',
+  }),
 };
