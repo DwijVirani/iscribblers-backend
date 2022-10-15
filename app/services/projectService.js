@@ -65,8 +65,11 @@ class ProjectService extends RepositoryService {
   async getSingle(userId, id) {
     try {
       if (!id) return;
-
-      const result = await Project.findOne({ createdBy: userId, _id: id });
+      const user = await userService.getSingle(userId);
+      if (!user) throw Error('User not found');
+      let query = { _id: id };
+      if (user.role !== USER_TYPE.ADMIN) query = { createdBy: userId, _id: id };
+      const result = await Project.findOne(query);
       if (result) return result;
       return undefined;
     } catch (e) {
