@@ -43,7 +43,7 @@ router.get(
 );
 
 /**
- * @route GET api/project/:id
+ * @route GET api/project
  * @description get list
  * @returns JSON
  * @access public
