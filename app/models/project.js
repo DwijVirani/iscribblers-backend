@@ -207,6 +207,9 @@ const projectSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    is_assigned: {
+      type: Boolean,
+    },
     assigned_to: {
       type: Schema.Types.ObjectId,
       ref: User,

@@ -2,9 +2,9 @@ const path = require('path');
 const uuid = require('uuid');
 const Cloud = require('@google-cloud/storage');
 const { GCLOUD_STORAGE_BUCKET } = require('./../config/env');
-const gcServiceKey = require('./../../google-credentials.json');
+const gcServiceKey = require('./../../google.json');
 
-const serviceKeyPath = path.join(__dirname, './../../google-credentials.json');
+const serviceKeyPath = path.join(__dirname, './../../google.json');
 
 class MediaService {
   /**
@@ -19,20 +19,24 @@ class MediaService {
       projectId: gcServiceKey.project_id,
     });
     const bucket = storage.bucket(GCLOUD_STORAGE_BUCKET);
+
     return new Promise(async (resolve, reject) => {
       try {
         const fileName = `${uuid.v4()}_${name}`;
+
         const blob = bucket.file(fileName.replace(/ /g, '_'));
         const blobStream = blob.createWriteStream({
           resumable: false,
         });
         const byteImage = Buffer.from(base64String, 'base64');
+        console.log('byteImage', byteImage);
         blobStream
           .on('finish', () => {
             const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
             resolve(publicUrl);
           })
-          .on('error', () => {
+          .on('error', (err) => {
+            console.log('err', err);
             reject(`Unable to upload image, something went wrong`);
           })
           .end(byteImage);
