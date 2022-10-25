@@ -209,6 +209,7 @@ class ProjectService extends RepositoryService {
 
       const existingItem = await this.getSingleForCreatorAssign(projectId);
       if (!existingItem) throw Error('Project does not exists');
+      else if (existingItem.is_accepted_by_creator) throw Error('Project already accepted by creator');
 
       const payload = {
         assigned_to: creatorId,
