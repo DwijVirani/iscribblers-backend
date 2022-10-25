@@ -14,3 +14,4 @@ mochawesome-report/
 *.csv
 app/logs
 google.json
+google-credentials.json
