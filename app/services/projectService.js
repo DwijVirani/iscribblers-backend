@@ -68,7 +68,8 @@ class ProjectService extends RepositoryService {
       const user = await userService.getSingle(userId);
       if (!user) throw Error('User not found');
       let query = { _id: id };
-      if (user.role !== USER_TYPE.ADMIN) query = { createdBy: userId, _id: id };
+      if (user.role === USER_TYPE.BUSINESS) query = { createdBy: userId, _id: id };
+      else if (user.role === USER_TYPE.CREATOR) query = { assigned_to: userId, _id: id };
       const result = await Project.findOne(query);
       if (result) return result;
       return undefined;
@@ -95,7 +96,7 @@ class ProjectService extends RepositoryService {
       if (!user) throw Error('User not found');
       let query = {};
       if (user.role === USER_TYPE.BUSINESS) query = { createdBy: userId };
-      else if (user.role === USER_TYPE.CREATOR) query = { assigned_to: userId, $exists: { assigned_to: true } };
+      else if (user.role === USER_TYPE.CREATOR) query = { assigned_to: userId };
       const result = await Project.find(query);
       if (result)
         return result.map((item) => {
