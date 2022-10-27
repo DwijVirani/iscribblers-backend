@@ -222,6 +222,14 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    website_url: {
+      type: String,
+      required: false,
+    },
+    linkedin_url: {
+      type: String,
+      required: false,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: User,
