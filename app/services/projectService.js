@@ -217,9 +217,18 @@ class ProjectService extends RepositoryService {
         status_update_time: new Date(),
         is_assigned: true,
       };
+
       const result = await super.update(userId, projectId, payload);
       if (result) {
         const item = await this.getSingleForCreatorAssign(result.id);
+        // const statusName = PROJECT_STATUS_NAMES[Number(payload)];
+        const notificationPayload = {
+          user: existingItem.createdBy,
+          message: 'Project assigned to creator',
+          project: existingItem.id,
+          status: payload,
+        };
+        await notificationsService.create(notificationPayload);
         return item;
       }
       return undefined;
@@ -239,9 +248,19 @@ class ProjectService extends RepositoryService {
 
       const payload = {
         is_accepted_by_creator: true,
+        status: PROJECT_STATUS.WRITING_IN_PROGRESS,
       };
+      const statusName = PROJECT_STATUS_NAMES[Number(payload)];
+
       const result = await super.update(userId, projectId, payload);
       if (result) {
+        const notificationPayload = {
+          user: existingItem.createdBy,
+          message: `Project status updated to ${statusName}`,
+          project: existingItem.id,
+          status: payload,
+        };
+        await notificationsService.create(notificationPayload);
         return result;
       }
       return undefined;

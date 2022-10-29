@@ -53,7 +53,7 @@ module.exports = {
     1: 'Draft',
     2: 'Pending Allocation',
     3: 'Outline Creation',
-    4: 'Pendgin Approval',
+    4: 'Pending Approval',
     5: 'Writing in Progress',
     6: 'Rework Needed',
     7: 'Editing in Progress',
