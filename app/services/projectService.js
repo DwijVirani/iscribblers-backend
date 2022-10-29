@@ -222,13 +222,13 @@ class ProjectService extends RepositoryService {
       if (result) {
         const item = await this.getSingleForCreatorAssign(result.id);
         // const statusName = PROJECT_STATUS_NAMES[Number(payload)];
-        const notificationPayload = {
-          user: existingItem.createdBy,
-          message: 'Project assigned to creator',
-          project: existingItem.id,
-          status: payload,
-        };
-        await notificationsService.create(notificationPayload);
+        // const notificationPayload = {
+        //   user: existingItem.createdBy,
+        //   message: 'Project assigned to creator',
+        //   project: existingItem.id,
+        //   status: payload,
+        // };
+        // await notificationsService.create(notificationPayload);
         return item;
       }
       return undefined;
