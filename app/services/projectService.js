@@ -254,13 +254,13 @@ class ProjectService extends RepositoryService {
 
       const result = await super.update(userId, projectId, payload);
       if (result) {
-        const notificationPayload = {
-          user: existingItem.createdBy,
-          message: `Project status updated to ${statusName}`,
-          project: existingItem.id,
-          status: payload,
-        };
-        await notificationsService.create(notificationPayload);
+        // const notificationPayload = {
+        //   user: existingItem.createdBy,
+        //   message: `Project status updated to ${statusName}`,
+        //   project: existingItem.id,
+        //   status: payload,
+        // };
+        // await notificationsService.create(notificationPayload);
         return result;
       }
       return undefined;
