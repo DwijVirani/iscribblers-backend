@@ -1,5 +1,5 @@
 const Project = require('../models/project');
-const { USER_TYPE, PROJECT_STATUS_NAMES, PROJECT_STATUS } = require('../config/constants');
+const { USER_TYPE, PROJECT_STATUS_NAMES, PROJECT_STATUS, WRITER_TYPE } = require('../config/constants');
 const RepositoryService = require('./repositoryService');
 const realtimeService = require('./realtimeService');
 const invoiceService = require('./invoiceService');
@@ -43,6 +43,8 @@ class ProjectService extends RepositoryService {
     try {
       if (!payload) return;
       if (validateProjectInputs(payload)) {
+        const amount = await this.amountCalculation(payload);
+        payload.amount = amount;
         const result = await super.create(userId, payload);
         if (result) {
           const notificationPayload = {
@@ -56,6 +58,38 @@ class ProjectService extends RepositoryService {
           return result;
         }
         return undefined;
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async amountCalculation(payload) {
+    try {
+      if (Number(payload.writer) === WRITER_TYPE.GENERALIST) {
+        if (payload.project_type === 'Product Description') {
+          const amount = Number(payload.word_count) * 2;
+          return amount;
+        } else {
+          const amount = Number(payload.word_count) * 2.5;
+          return amount;
+        }
+      } else if (Number(payload.writer) === WRITER_TYPE.ADVANCED) {
+        if (payload.project_type === 'Product Description') {
+          const amount = Number(payload.word_count) * 3;
+          return amount;
+        } else {
+          const amount = Number(payload.word_count) * 4.5;
+          return amount;
+        }
+      } else if (Number(payload.writer) === WRITER_TYPE.SUBJECT_MATTER_EXPERT) {
+        if (payload.project_type === 'Product Description') {
+          const amount = Number(payload.word_count) * 4;
+          return amount;
+        } else {
+          const amount = Number(payload.word_count) * 6;
+          return amount;
+        }
       }
     } catch (e) {
       throw e;
@@ -250,7 +284,7 @@ class ProjectService extends RepositoryService {
         is_accepted_by_creator: true,
         status: PROJECT_STATUS.WRITING_IN_PROGRESS,
       };
-      const statusName = PROJECT_STATUS_NAMES[Number(payload)];
+      // const statusName = PROJECT_STATUS_NAMES[Number(payload)];
 
       const result = await super.update(userId, projectId, payload);
       if (result) {
